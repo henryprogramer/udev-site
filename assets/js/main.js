@@ -11,7 +11,6 @@
       const targetUrl = externalLinks[key];
 
       if (!targetUrl) {
-        console.warn("Link não configurado para:", key);
         return;
       }
 
@@ -67,10 +66,7 @@
       event.preventDefault();
 
       const dynamicEmailLink = document.querySelector(".js-company-email-link");
-      const emailLink =
-        (dynamicEmailLink && dynamicEmailLink.getAttribute("href")) ||
-        externalLinks.email ||
-        "mailto:udev.oficial@gmail.com";
+      const emailLink = (dynamicEmailLink && dynamicEmailLink.getAttribute("href")) || "";
 
       if (!emailLink.startsWith("mailto:")) {
         return;

@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Canal oficial de contato da Udev.">
-  <meta name="theme-color" content="#070712">
+  <meta name="description" content="Contato oficial da UDEV - StartUP.">
+  <meta name="theme-color" content="#050505">
   <title>Contato | Udev</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -14,13 +14,16 @@
 <body data-page="contato">
   <header class="site-header">
     <div class="container nav-wrap">
-      <a class="brand" href="../"><span class="brand-mark">U</span>dev</a>
+      <a class="brand" href="../">
+        <img class="brand-logo" src="../assets/img/logo-udev.png" alt="Logo Udev">
+        <span>Udev</span>
+      </a>
       <nav class="nav-menu" aria-label="Navegação principal">
-        <a href="../">Home</a>
+        <a href="../">Site público</a>
         <a href="../vendapro/">VendaPro</a>
         <a href="../downloads/">Downloads</a>
         <a aria-current="page" href="../contato/">Contato</a>
-        <a class="btn btn-outline nav-cta" href="../downloads/">Download App</a>
+        <a class="nav-cta" href="../empresa/">Área da empresa</a>
       </nav>
     </div>
   </header>
@@ -28,9 +31,9 @@
   <main>
     <section class="inner-hero">
       <div class="container" data-reveal>
-        <p class="eyebrow">Canal oficial</p>
-        <h1>Contato Udev</h1>
-        <p>Fale com nossa equipe para implantação do VendaPro, projetos sob medida e parcerias estratégicas de tecnologia.</p>
+        <p class="eyebrow">Contato</p>
+        <h1 class="js-company-name"></h1>
+        <p id="js-company-summary"></p>
         <div class="breadcrumb">Home <span>›</span> Contato</div>
       </div>
     </section>
@@ -38,31 +41,30 @@
     <section class="section-tight section">
       <div class="container contact-grid" data-reveal>
         <article class="panel contact-card">
-          <h3>Contato da empresa</h3>
-          <p class="js-company-name">UDEV - StartUP</p>
+          <h3>Empresa</h3>
           <div class="contact-meta">
-            <p><strong>E-mail:</strong> <a class="js-company-email-link" href="mailto:udev.oficial@gmail.com"><span class="js-company-email-text">udev.oficial@gmail.com</span></a></p>
-            <p><strong>Instagram:</strong> <a class="js-company-instagram-link" target="_blank" rel="noopener noreferrer" href="https://www.instagram.com/udev.oficial/">@udev.oficial</a></p>
-            <p><strong>WhatsApp:</strong> <a class="js-company-whatsapp-link" target="_blank" rel="noopener noreferrer" href="#"><span class="js-company-whatsapp-text">+55 (63) 98441-2348</span></a></p>
+            <p><strong>E-mail:</strong> <a class="js-company-email-link" href="#"><span class="js-company-email-text"></span></a></p>
+            <p><strong>Instagram:</strong> <a class="js-company-instagram-link" target="_blank" rel="noopener noreferrer" href="#">Perfil oficial</a></p>
+            <p><strong>WhatsApp:</strong> <a class="js-company-whatsapp-link" target="_blank" rel="noopener noreferrer" href="#"><span class="js-company-whatsapp-text"></span></a></p>
+          </div>
+        </article>
+
+        <article class="panel contact-card">
+          <h3>Suporte</h3>
+          <div class="contact-meta">
+            <p><strong>E-mail:</strong> <a class="js-support-email-link" href="#"><span class="js-support-email-text"></span></a></p>
+            <p><strong>Telefone:</strong> <a class="js-support-phone-link" href="#"><span class="js-support-phone-text"></span></a></p>
+            <p><strong>Horário:</strong> <span id="js-support-hours"></span></p>
           </div>
         </article>
 
         <article class="panel contact-card">
           <h3>Desenvolvedor / CO-CEO</h3>
           <div class="contact-meta">
-            <p><strong>Nome:</strong> <span class="js-dev-name">Pedro Henrique Santos Silva</span></p>
-            <p><strong>Cargo:</strong> <span class="js-dev-role">Desenvolvedor / CO-CEO</span></p>
-            <p><strong>E-mail:</strong> <a class="js-dev-email-link" href="mailto:pedrohenrique.dev.contato@gmail.com"><span class="js-dev-email-text">pedrohenrique.dev.contato@gmail.com</span></a></p>
-            <p><strong>Telefone:</strong> <span class="js-dev-phone">+55 (63) 98441-2348</span></p>
-          </div>
-        </article>
-
-        <article class="panel contact-card">
-          <h3>Mensagem institucional</h3>
-          <p>Estamos prontos para apoiar sua evolução digital com soluções robustas, integração eficiente e foco em impacto de negócio.</p>
-          <div class="notice-card">Prioridade para empresas em implantação e parceiros de longo prazo.</div>
-          <div class="contact-row">
-            <a class="btn btn-primary js-company-whatsapp-link" target="_blank" rel="noopener noreferrer" href="#">Abrir WhatsApp</a>
+            <p><strong>Nome:</strong> <span class="js-dev-name"></span></p>
+            <p><strong>Cargo:</strong> <span class="js-dev-role"></span></p>
+            <p><strong>E-mail:</strong> <a class="js-dev-email-link" href="#"><span class="js-dev-email-text"></span></a></p>
+            <p><strong>Telefone:</strong> <span class="js-dev-phone"></span></p>
           </div>
         </article>
       </div>
@@ -70,36 +72,9 @@
   </main>
 
   <footer class="site-footer">
-    <div class="container footer-grid">
-      <section class="footer-col">
-        <a class="brand" href="../"><span class="brand-mark">U</span>dev</a>
-        <p>Startup focada em produtos digitais, automação e soluções SaaS para empresas em crescimento.</p>
-      </section>
-
-      <section class="footer-col">
-        <h3>Newsletter Udev</h3>
-        <p>Receba novidades de produto e atualizações institucionais.</p>
-        <form class="newsletter-form js-newsletter-form">
-          <input class="js-newsletter-email" type="email" placeholder="Seu melhor e-mail" required>
-          <button class="btn btn-primary btn-block" type="submit">Inscrever</button>
-        </form>
-        <p class="small muted">Sem backend: a inscrição é encaminhada por e-mail.</p>
-      </section>
-
-      <section class="footer-col">
-        <h3>Contato</h3>
-        <div class="footer-links">
-          <a class="js-company-whatsapp-link" target="_blank" rel="noopener noreferrer" href="#">WhatsApp Comercial</a>
-          <a class="js-company-email-link" href="mailto:udev.oficial@gmail.com"><span class="js-company-email-text">udev.oficial@gmail.com</span></a>
-          <a class="js-company-instagram-link" target="_blank" rel="noopener noreferrer" href="https://www.instagram.com/udev.oficial/">Instagram oficial</a>
-          <a href="../empresa/">Área da empresa</a>
-        </div>
-      </section>
-    </div>
-
     <div class="container footer-bottom">
-      <span>© <span class="js-year"></span> <span class="js-company-name">UDEV - StartUP</span>. Todos os direitos reservados.</span>
-      <span>Tecnologia aplicada a crescimento previsível.</span>
+      <span>© <span class="js-year"></span> <span class="js-company-name"></span>.</span>
+      <span id="js-sales-line"></span>
     </div>
   </footer>
 

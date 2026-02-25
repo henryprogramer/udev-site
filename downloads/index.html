@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Downloads oficiais da Udev por links externos.">
-  <meta name="theme-color" content="#070712">
+  <meta name="description" content="Página de downloads oficiais da UDEV.">
+  <meta name="theme-color" content="#050505">
   <title>Downloads | Udev</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -14,13 +14,16 @@
 <body data-page="downloads">
   <header class="site-header">
     <div class="container nav-wrap">
-      <a class="brand" href="../"><span class="brand-mark">U</span>dev</a>
+      <a class="brand" href="../">
+        <img class="brand-logo" src="../assets/img/logo-udev.png" alt="Logo Udev">
+        <span>Udev</span>
+      </a>
       <nav class="nav-menu" aria-label="Navegação principal">
-        <a href="../">Home</a>
+        <a href="../">Site público</a>
         <a href="../vendapro/">VendaPro</a>
         <a aria-current="page" href="../downloads/">Downloads</a>
         <a href="../contato/">Contato</a>
-        <a class="btn btn-outline nav-cta" href="../downloads/">Download App</a>
+        <a class="nav-cta" href="../empresa/">Área da empresa</a>
       </nav>
     </div>
   </header>
@@ -28,61 +31,22 @@
   <main>
     <section class="inner-hero">
       <div class="container" data-reveal>
-        <p class="eyebrow">Distribuição oficial</p>
-        <h1>Downloads</h1>
-        <p>Catálogo de downloads da Udev gerenciado pela empresa, com arquivos hospedados externamente.</p>
+        <p class="eyebrow">Downloads</p>
+        <h1>Biblioteca de produtos</h1>
+        <p>Os arquivos são distribuídos pelo Google Drive oficial da empresa.</p>
         <div class="breadcrumb">Home <span>›</span> Downloads</div>
       </div>
     </section>
 
     <section class="section-tight section">
-      <div id="js-download-products" class="container download-grid" data-reveal>
-        <article class="panel item-card">
-          <h3>Carregando catálogo...</h3>
-          <p>Os produtos serão exibidos conforme o cadastro da empresa.</p>
-        </article>
-      </div>
-    </section>
-
-    <section class="section-compact">
-      <div class="container panel contact-card" data-reveal>
-        <h3>Observação importante</h3>
-        <p>Não armazenamos binários grandes neste repositório. Todos os downloads apontam para links externos controlados pela UDEV.</p>
-      </div>
+      <div id="js-download-products" class="container download-grid" data-reveal></div>
     </section>
   </main>
 
   <footer class="site-footer">
-    <div class="container footer-grid">
-      <section class="footer-col">
-        <a class="brand" href="../"><span class="brand-mark">U</span>dev</a>
-        <p>Startup focada em produtos digitais, automação e soluções SaaS para empresas em crescimento.</p>
-      </section>
-
-      <section class="footer-col">
-        <h3>Newsletter Udev</h3>
-        <p>Receba novidades de produto e atualizações institucionais.</p>
-        <form class="newsletter-form js-newsletter-form">
-          <input class="js-newsletter-email" type="email" placeholder="Seu melhor e-mail" required>
-          <button class="btn btn-primary btn-block" type="submit">Inscrever</button>
-        </form>
-        <p class="small muted">Sem backend: a inscrição é encaminhada por e-mail.</p>
-      </section>
-
-      <section class="footer-col">
-        <h3>Contato</h3>
-        <div class="footer-links">
-          <a class="js-company-whatsapp-link" target="_blank" rel="noopener noreferrer" href="#">WhatsApp Comercial</a>
-          <a class="js-company-email-link" href="mailto:udev.oficial@gmail.com"><span class="js-company-email-text">udev.oficial@gmail.com</span></a>
-          <a class="js-company-instagram-link" target="_blank" rel="noopener noreferrer" href="https://www.instagram.com/udev.oficial/">Instagram oficial</a>
-          <a href="../empresa/">Área da empresa</a>
-        </div>
-      </section>
-    </div>
-
     <div class="container footer-bottom">
-      <span>© <span class="js-year"></span> <span class="js-company-name">UDEV - StartUP</span>. Todos os direitos reservados.</span>
-      <span>Tecnologia aplicada a crescimento previsível.</span>
+      <span>© <span class="js-year"></span> <span class="js-company-name"></span>.</span>
+      <span id="js-sales-line"></span>
     </div>
   </footer>
 

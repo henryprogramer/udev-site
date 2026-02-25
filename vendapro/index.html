@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="VendaPro: SaaS de gestão comercial da Udev.">
-  <meta name="theme-color" content="#070712">
+  <meta name="description" content="Página oficial do produto VendaPro.">
+  <meta name="theme-color" content="#050505">
   <title>VendaPro | Udev</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -14,13 +14,16 @@
 <body data-page="vendapro">
   <header class="site-header">
     <div class="container nav-wrap">
-      <a class="brand" href="../"><span class="brand-mark">U</span>dev</a>
+      <a class="brand" href="../">
+        <img class="brand-logo" src="../assets/img/logo-udev.png" alt="Logo Udev">
+        <span>Udev</span>
+      </a>
       <nav class="nav-menu" aria-label="Navegação principal">
-        <a href="../">Home</a>
+        <a href="../">Site público</a>
         <a aria-current="page" href="../vendapro/">VendaPro</a>
         <a href="../downloads/">Downloads</a>
         <a href="../contato/">Contato</a>
-        <a class="btn btn-outline nav-cta" href="../downloads/">Download App</a>
+        <a class="nav-cta" href="../empresa/">Área da empresa</a>
       </nav>
     </div>
   </header>
@@ -28,9 +31,9 @@
   <main>
     <section class="inner-hero">
       <div class="container" data-reveal>
-        <p class="eyebrow">Produto SaaS</p>
-        <h1 class="js-vendapro-name">VendaPro</h1>
-        <p class="js-vendapro-description">Plataforma para gestão comercial, automação de rotinas e análise de performance em tempo real para times de vendas.</p>
+        <p class="eyebrow">Produto</p>
+        <h1 class="js-vendapro-name"></h1>
+        <p class="js-vendapro-description"></p>
         <div class="breadcrumb">Home <span>›</span> VendaPro</div>
       </div>
     </section>
@@ -38,69 +41,27 @@
     <section class="section-tight section">
       <div class="container content-wrap">
         <article class="panel" data-reveal>
-          <h2 class="js-vendapro-subtitle">Plataforma web comercial</h2>
-          <p class="lead">O VendaPro estrutura o ciclo de vendas da prospecção ao pós-venda, reduzindo perda de contexto e acelerando decisões estratégicas.</p>
-          <div class="info-pill">Escalável para equipes em expansão</div>
+          <h2 class="js-vendapro-subtitle"></h2>
+          <p class="lead js-vendapro-long"></p>
           <div class="hero-actions">
-            <a class="btn btn-primary" id="js-vendapro-download" target="_blank" rel="noopener noreferrer" href="#">Baixar VendaPro</a>
-            <a class="btn btn-secondary" id="js-vendapro-online" target="_blank" rel="noopener noreferrer" href="#">Acessar versão online</a>
+            <a class="btn btn-primary" id="js-vendapro-download" target="_blank" rel="noopener noreferrer" href="#">Download</a>
+            <a class="btn btn-secondary" id="js-vendapro-online" target="_blank" rel="noopener noreferrer" href="#">Acessar online</a>
           </div>
+          <div id="js-vendapro-meta" class="hero-points"></div>
         </article>
 
         <article class="panel" data-reveal>
-          <h3>Funcionalidades</h3>
-          <ul class="feature-list">
-            <li>Pipeline de oportunidades com etapas personalizáveis</li>
-            <li>Gestão centralizada de clientes, leads e follow-up</li>
-            <li>Painéis executivos com indicadores em tempo real</li>
-            <li>Automação de tarefas recorrentes e alertas críticos</li>
-            <li>Relatórios para previsibilidade comercial e auditoria</li>
-          </ul>
-        </article>
-      </div>
-    </section>
-
-    <section class="section-compact">
-      <div id="js-vendapro-related-products" class="container quick-grid" data-reveal>
-        <article class="panel quick-card">
-          <h3>Carregando produtos relacionados...</h3>
-          <p>Aguarde enquanto sincronizamos os dados da empresa.</p>
+          <h3>Produtos relacionados</h3>
+          <div id="js-vendapro-related-products" class="quick-grid"></div>
         </article>
       </div>
     </section>
   </main>
 
   <footer class="site-footer">
-    <div class="container footer-grid">
-      <section class="footer-col">
-        <a class="brand" href="../"><span class="brand-mark">U</span>dev</a>
-        <p>Startup focada em produtos digitais, automação e soluções SaaS para empresas em crescimento.</p>
-      </section>
-
-      <section class="footer-col">
-        <h3>Newsletter Udev</h3>
-        <p>Receba novidades de produto e atualizações institucionais.</p>
-        <form class="newsletter-form js-newsletter-form">
-          <input class="js-newsletter-email" type="email" placeholder="Seu melhor e-mail" required>
-          <button class="btn btn-primary btn-block" type="submit">Inscrever</button>
-        </form>
-        <p class="small muted">Sem backend: a inscrição é encaminhada por e-mail.</p>
-      </section>
-
-      <section class="footer-col">
-        <h3>Contato</h3>
-        <div class="footer-links">
-          <a class="js-company-whatsapp-link" target="_blank" rel="noopener noreferrer" href="#">WhatsApp Comercial</a>
-          <a class="js-company-email-link" href="mailto:udev.oficial@gmail.com"><span class="js-company-email-text">udev.oficial@gmail.com</span></a>
-          <a class="js-company-instagram-link" target="_blank" rel="noopener noreferrer" href="https://www.instagram.com/udev.oficial/">Instagram oficial</a>
-          <a href="../empresa/">Área da empresa</a>
-        </div>
-      </section>
-    </div>
-
     <div class="container footer-bottom">
-      <span>© <span class="js-year"></span> <span class="js-company-name">UDEV - StartUP</span>. Todos os direitos reservados.</span>
-      <span>Tecnologia aplicada a crescimento previsível.</span>
+      <span>© <span class="js-year"></span> <span class="js-company-name"></span>.</span>
+      <span id="js-sales-line"></span>
     </div>
   </footer>
 

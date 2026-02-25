@@ -1,102 +1,90 @@
-# Udev Site Institucional
+# UDEV Site Institucional
 
-Site institucional estático da **UDEV - StartUP**, com duas áreas:
+Projeto com duas áreas:
 
-- **Público**: páginas para usuários/clientes (`/`, `/vendapro/`, `/downloads/`, `/contato/`)
-- **Empresa**: painel de gestão (`/empresa/`) para editar informações, cadastrar produtos e banners
+- **Site público**: `/`, `/vendapro/`, `/downloads/`, `/contato/`
+- **Área da empresa**: `/empresa/`
 
-## Estrutura
+Layout atual:
 
-```text
-/
-├── CNAME
-├── index.html
-├── empresa/
-│   └── index.html
-├── vendapro/
-│   └── index.html
-├── downloads/
-│   └── index.html
-├── contato/
-│   └── index.html
-├── assets/
-│   ├── css/
-│   │   └── style.css
-│   ├── js/
-│   │   ├── links.js
-│   │   ├── main.js
-│   │   ├── public-site.js
-│   │   └── empresa-admin.js
-│   ├── data/
-│   │   └── site-content.json
-│   └── img/
-└── README.md
-```
+- tema preto e branco
+- logo oficial em `assets/img/logo-udev.png`
 
-## Dados reais padrão
+## Regras de dados públicos
 
-O conteúdo inicial já está configurado com os contatos oficiais:
+- Não há dados fictícios padrão no cliente.
+- O conteúdo só aparece quando `meta.published = true` e dados essenciais existem.
+- Se não houver conteúdo publicado, a página pública fica **em branco**.
 
-- Empresa: `udev.oficial@gmail.com`
-- Instagram: `https://www.instagram.com/udev.oficial/`
-- Desenvolvedor/CO-CEO: Pedro Henrique Santos Silva (`pedrohenrique.dev.contato@gmail.com`, `+55 (63) 98441-2348`)
+Fonte de conteúdo (ordem):
 
-Fonte dos dados públicos:
-
-- `assets/data/site-content.json`
+1. API (`apiBaseUrl`) quando configurada
+2. Google Drive (`publicContentDriveFileId`) quando configurado
+3. `assets/data/site-content.json`
 
 ## Área da empresa (`/empresa/`)
 
-No painel interno você pode:
+Organizada em abas:
 
-- editar informações institucionais e contatos
-- cadastrar/editar/remover banners
-- cadastrar/editar/remover produtos
-- exportar/importar JSON de conteúdo
-- salvar rascunho local no navegador
-- aplicar pré-visualização local com `?preview=1`
-- conectar Google e sincronizar JSON no Drive
-- enviar imagens para o Drive e usar as URLs públicas
+1. Empresa
+2. Suporte e contato
+3. Serviços e vendas
+4. Banners
+5. Produtos
+6. Publicação e Drive
 
-## Google Drive API
+Funcionalidades:
 
-Configuração central em:
+- cadastro/edição/remoção de serviços
+- cadastro/edição/remoção de banners
+- cadastro/edição/remoção de produtos
+- validação de produto por **ID de arquivo do Google Drive** com dono `udev.oficial@gmail.com`
+- upload de imagens para Drive
+- salvar/carregar JSON no Drive
+- salvar/carregar JSON na API
+- preview local com `?preview=1`
 
-- `assets/js/links.js`
+## Configuração (`assets/js/links.js`)
 
-Campos principais:
-
+- `apiBaseUrl`
+- `publicContentUrl`
+- `publicContentDriveFileId`
 - `googleClientId`
 - `googleDriveScope`
 - `driveContentFileName`
-- `publicContentDriveFileId` (opcional)
+- `companyDriveOwnerEmail`
 
-### Fluxo recomendado
+## Backend SQLite opcional (API)
 
-1. Acesse `/empresa/`.
-2. Clique em **Conectar Google**.
-3. Cadastre banners/produtos e ajuste os dados institucionais.
-4. Use **Salvar JSON no Drive** para sincronizar o conteúdo.
-5. Use upload de imagem no painel para gerar URLs no formato Drive.
+Foi incluído backend em `backend/`:
 
-## Publicação no GitHub Pages
+- `backend/server.py`
+- `backend/schema.sql`
 
-Configurado para:
+Rotas:
 
-- branch `main`
-- pasta `/ (root)`
+- `GET /health`
+- `GET /api/content`
+- `PUT /api/content`
 
-## Domínio
+Rodar localmente:
 
-Arquivo `CNAME`:
-
-```text
-unidev.dev.br
+```bash
+cd backend
+python3 server.py
 ```
 
-## Observações de segurança
+API base local:
 
-- Este projeto é estático e não possui backend.
-- Não coloque `client_secret` no frontend.
-- O arquivo `credentials.json` deve permanecer fora do site publicado.
-- Downloads e artes devem permanecer em armazenamento externo (Google Drive).
+```text
+http://localhost:8787
+```
+
+## Observação sobre PostgreSQL
+
+GitHub Pages não executa backend/DB. Para PostgreSQL real em produção, use API externa (Supabase/Render/Fly etc.) e configure `apiBaseUrl`.
+
+## Segurança
+
+- Não publique `credentials.json`/`client_secret` no frontend.
+- `.gitignore` já ignora arquivos de credencial comuns.

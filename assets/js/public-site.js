@@ -2,10 +2,9 @@
   "use strict";
 
   const links = window.UDEV_LINKS || {};
-  const FALLBACK_CONTENT_URL = "/assets/data/site-content.json";
   const PREVIEW_STORAGE_KEY = "udev_site_preview_content";
 
-  function safeText(value, fallback) {
+  function safe(value, fallback) {
     if (value === undefined || value === null || value === "") {
       return fallback || "";
     }
@@ -13,8 +12,20 @@
     return String(value);
   }
 
+  function setTextAll(selector, value) {
+    document.querySelectorAll(selector).forEach((el) => {
+      el.textContent = safe(value);
+    });
+  }
+
+  function setHrefAll(selector, href) {
+    document.querySelectorAll(selector).forEach((el) => {
+      el.setAttribute("href", safe(href, "#"));
+    });
+  }
+
   function escapeHtml(value) {
-    return safeText(value)
+    return safe(value)
       .replace(/&/g, "&amp;")
       .replace(/</g, "&lt;")
       .replace(/>/g, "&gt;")
@@ -22,39 +33,35 @@
       .replace(/'/g, "&#039;");
   }
 
-  function setTextAll(selector, value) {
-    document.querySelectorAll(selector).forEach((element) => {
-      element.textContent = safeText(value);
-    });
-  }
-
-  function setLinkAll(selector, href, fallbackLabel) {
-    document.querySelectorAll(selector).forEach((element) => {
-      if (href) {
-        element.setAttribute("href", href);
-      }
-
-      if (fallbackLabel && !element.textContent.trim()) {
-        element.textContent = fallbackLabel;
-      }
-    });
-  }
-
-  function driveDirectUrl(fileId) {
+  function driveDownloadUrl(fileId) {
     return "https://drive.google.com/uc?export=download&id=" + encodeURIComponent(fileId);
   }
 
-  async function tryLoadJson(url) {
+  function absoluteUrl(url) {
+    const raw = safe(url);
+
+    if (!raw) {
+      return "#";
+    }
+
+    if (raw.startsWith("http://") || raw.startsWith("https://") || raw.startsWith("mailto:") || raw.startsWith("tel:")) {
+      return raw;
+    }
+
+    return raw;
+  }
+
+  async function fetchJson(url) {
     const response = await fetch(url, { cache: "no-store" });
 
     if (!response.ok) {
-      throw new Error("Falha ao carregar " + url + " (" + response.status + ")");
+      throw new Error("Falha ao carregar conteúdo (" + response.status + ").");
     }
 
     return response.json();
   }
 
-  async function loadContent() {
+  async function loadRawContent() {
     const params = new URLSearchParams(window.location.search);
 
     if (params.get("preview") === "1") {
@@ -64,77 +71,163 @@
         try {
           return JSON.parse(preview);
         } catch (error) {
-          console.warn("Rascunho de preview inválido:", error);
+          console.warn("Preview inválido", error);
         }
       }
     }
 
-    const candidates = [];
+    const runtimeApiBase = localStorage.getItem("udev_site_api_base_url") || links.apiBaseUrl;
+
+    if (runtimeApiBase) {
+      try {
+        return await fetchJson(String(runtimeApiBase).replace(/\/$/, "") + "/api/content");
+      } catch (error) {
+        console.warn("Falha no conteúdo da API", error);
+      }
+    }
 
     if (links.publicContentDriveFileId) {
-      candidates.push(driveDirectUrl(links.publicContentDriveFileId));
+      try {
+        return await fetchJson(driveDownloadUrl(links.publicContentDriveFileId));
+      } catch (error) {
+        console.warn("Falha no conteúdo do Drive", error);
+      }
     }
 
     if (links.publicContentUrl) {
-      candidates.push(links.publicContentUrl);
-    }
-
-    if (!candidates.includes(FALLBACK_CONTENT_URL)) {
-      candidates.push(FALLBACK_CONTENT_URL);
-    }
-
-    for (const url of candidates) {
       try {
-        const data = await tryLoadJson(url);
-
-        if (data && typeof data === "object") {
-          return data;
-        }
+        return await fetchJson(links.publicContentUrl);
       } catch (error) {
-        console.warn("Conteúdo não carregado em:", url, error);
+        console.warn("Falha no conteúdo local", error);
       }
     }
 
     return null;
   }
 
-  function getVisibleProducts(content) {
-    if (!Array.isArray(content.products)) {
-      return [];
+  function normalizeContent(raw) {
+    const data = raw && typeof raw === "object" ? raw : {};
+
+    const legacyContacts = data.contacts || {};
+
+    return {
+      meta: Object.assign({ published: false }, data.meta || {}),
+      hero: Object.assign(
+        {
+          eyebrow: "",
+          headline: "",
+          subheadline: "",
+          points: []
+        },
+        data.hero || {}
+      ),
+      company: Object.assign(
+        {
+          name: "",
+          summary: "",
+          email: "",
+          instagram: "",
+          whatsapp: "",
+          whatsappUrl: ""
+        },
+        data.company || legacyContacts.company || {}
+      ),
+      support: Object.assign(
+        {
+          email: "",
+          phone: "",
+          hours: ""
+        },
+        data.support || {}
+      ),
+      developer: Object.assign(
+        {
+          name: "",
+          role: "",
+          email: "",
+          phone: ""
+        },
+        data.developer || legacyContacts.developer || {}
+      ),
+      sales: Object.assign(
+        {
+          line: ""
+        },
+        data.sales || {}
+      ),
+      services: Array.isArray(data.services) ? data.services : [],
+      banners: Array.isArray(data.banners) ? data.banners : [],
+      products: Array.isArray(data.products) ? data.products : []
+    };
+  }
+
+  function hasPublicContent(content) {
+    if (!content || !content.meta || content.meta.published !== true) {
+      return false;
     }
 
-    return content.products.filter((product) => product && product.visible !== false);
+    if (!safe(content.company.name)) {
+      return false;
+    }
+
+    if (
+      !safe(content.hero.headline) &&
+      !content.products.length &&
+      !content.banners.length &&
+      !content.services.length
+    ) {
+      return false;
+    }
+
+    return true;
+  }
+
+  function blankPage() {
+    document.body.innerHTML = "";
+    document.body.style.background = "#ffffff";
+  }
+
+  function productDownloadHref(product) {
+    if (product.driveFileId) {
+      return driveDownloadUrl(product.driveFileId);
+    }
+
+    return "";
+  }
+
+  function visibleProducts(content) {
+    return content.products.filter((item) => item && item.visible !== false);
   }
 
   function buildProductCard(product) {
-    const imageUrl = safeText(product.imageUrl);
-    const imageSection = imageUrl
-      ? '<div class="catalog-image" style="background-image:url(\'' + escapeHtml(imageUrl) + '\')"></div>'
+    const image = safe(product.imageUrl)
+      ? '<div class="catalog-image" style="background-image:url(\'' + escapeHtml(product.imageUrl) + '\')"></div>'
+      : "";
+
+    const downloadHref = productDownloadHref(product);
+    const downloadButton = downloadHref
+      ? '<a class="btn btn-primary" target="_blank" rel="noopener noreferrer" href="' +
+        escapeHtml(downloadHref) +
+        '">Download</a>'
       : "";
 
     const onlineButton = product.onlineUrl
       ? '<a class="btn btn-secondary" target="_blank" rel="noopener noreferrer" href="' +
-        escapeHtml(product.onlineUrl) +
+        escapeHtml(absoluteUrl(product.onlineUrl)) +
         '">Acessar online</a>'
-      : "";
-
-    const downloadButton = product.downloadUrl
-      ? '<a class="btn btn-primary" target="_blank" rel="noopener noreferrer" href="' +
-        escapeHtml(product.downloadUrl) +
-        '">Download</a>'
       : "";
 
     return (
       '<article class="panel item-card">' +
-      imageSection +
+      image +
       '<p class="eyebrow">' +
-      escapeHtml(safeText(product.category, "Produto")) +
+      escapeHtml(safe(product.category)) +
       "</p>" +
       "<h3>" +
-      escapeHtml(safeText(product.name, "Produto")) +
+      escapeHtml(safe(product.name)) +
       "</h3>" +
       "<p>" +
-      escapeHtml(safeText(product.description, "Sem descrição.")) +
+      escapeHtml(safe(product.description)) +
       "</p>" +
       '<div class="card-actions">' +
       downloadButton +
@@ -144,192 +237,176 @@
     );
   }
 
-  function buildBannerCard(banner) {
-    const imageUrl = safeText(banner.imageUrl);
-    const imageSection = imageUrl
-      ? '<div class="catalog-image" style="background-image:url(\'' + escapeHtml(imageUrl) + '\')"></div>'
+  function buildSimpleCard(item, emptyCta) {
+    const cta = item.ctaLabel && item.ctaUrl
+      ? '<a class="text-link" href="' + escapeHtml(absoluteUrl(item.ctaUrl)) + '">' + escapeHtml(item.ctaLabel) + "</a>"
+      : emptyCta || "";
+
+    const image = safe(item.imageUrl)
+      ? '<div class="catalog-image" style="background-image:url(\'' + escapeHtml(item.imageUrl) + '\')"></div>'
       : "";
 
-    const ctaUrl = safeText(banner.ctaUrl, "#");
-
     return (
-      '<article class="panel quick-card banner-card">' +
-      imageSection +
+      '<article class="panel quick-card">' +
+      image +
       '<p class="eyebrow">' +
-      escapeHtml(safeText(banner.tag, "Banner")) +
+      escapeHtml(safe(item.tag || item.category)) +
       "</p>" +
       "<h3>" +
-      escapeHtml(safeText(banner.title, "Comunicado")) +
+      escapeHtml(safe(item.title || item.name)) +
       "</h3>" +
       "<p>" +
-      escapeHtml(safeText(banner.description, "Sem descrição.")) +
+      escapeHtml(safe(item.description)) +
       "</p>" +
-      '<a class="text-link" href="' +
-      escapeHtml(ctaUrl) +
-      '">' +
-      escapeHtml(safeText(banner.ctaLabel, "Ver mais")) +
-      "</a>" +
+      cta +
       "</article>"
     );
   }
 
-  function fillHome(content) {
-    setTextAll(".js-hero-eyebrow", safeText(content.hero && content.hero.eyebrow, "Startup de software"));
-    setTextAll(
-      ".js-hero-headline",
-      safeText(content.hero && content.hero.headline, "Soluções inteligentes em software e tecnologia")
-    );
-    setTextAll(
-      ".js-hero-subheadline",
-      safeText(content.hero && content.hero.subheadline, "A Udev cria produtos digitais com foco em resultado.")
-    );
-
-    const banners = Array.isArray(content.banners) ? content.banners : [];
-    const bannerContainer = document.getElementById("js-banner-list");
-
-    if (bannerContainer) {
-      if (banners.length) {
-        bannerContainer.innerHTML = banners.map(buildBannerCard).join("");
-      } else {
-        bannerContainer.innerHTML =
-          '<article class="panel quick-card"><h3>Sem banners cadastrados</h3><p>Use a área da empresa para publicar novos banners.</p></article>';
-      }
-    }
-
-    const products = getVisibleProducts(content);
-    const featured = products.filter((product) => product.featured);
-    const featuredProducts = featured.length ? featured : products.slice(0, 3);
-    const featuredContainer = document.getElementById("js-featured-products");
-
-    if (featuredContainer) {
-      if (featuredProducts.length) {
-        featuredContainer.innerHTML = featuredProducts.map(buildProductCard).join("");
-      } else {
-        featuredContainer.innerHTML =
-          '<article class="panel quick-card"><h3>Sem produtos cadastrados</h3><p>A empresa ainda não publicou itens na prateleira digital.</p></article>';
-      }
-    }
-
-    const testimonial = Array.isArray(content.testimonials) && content.testimonials[0];
-
-    if (testimonial) {
-      const rating = Math.max(1, Math.min(5, Number(testimonial.rating) || 5));
-      setTextAll(".js-testimonial-stars", "★".repeat(rating) + "☆".repeat(5 - rating));
-      setTextAll(".js-testimonial-quote", "\u201c" + safeText(testimonial.quote) + "\u201d");
-      setTextAll(".js-testimonial-name", safeText(testimonial.name));
-      setTextAll(".js-testimonial-role", safeText(testimonial.role));
-    }
-  }
-
-  function fillVendapro(content) {
-    const products = getVisibleProducts(content);
-    const vendapro =
-      products.find((product) => product.id === "vendapro-saas") ||
-      products.find((product) => /vendapro/i.test(safeText(product.name))) ||
-      products[0];
-
-    if (vendapro) {
-      setTextAll(".js-vendapro-name", safeText(vendapro.name, "VendaPro"));
-      setTextAll(".js-vendapro-subtitle", safeText(vendapro.subtitle, "Plataforma web comercial"));
-      setTextAll(
-        ".js-vendapro-description",
-        safeText(vendapro.description, "Solução para gestão comercial e automação operacional.")
-      );
-
-      const downloadButton = document.getElementById("js-vendapro-download");
-      const onlineButton = document.getElementById("js-vendapro-online");
-
-      if (downloadButton && vendapro.downloadUrl) {
-        downloadButton.setAttribute("href", vendapro.downloadUrl);
-      }
-
-      if (onlineButton && vendapro.onlineUrl) {
-        onlineButton.setAttribute("href", vendapro.onlineUrl);
-      }
-    }
-
-    const relatedContainer = document.getElementById("js-vendapro-related-products");
-
-    if (relatedContainer) {
-      const relatedProducts = products.filter((product) => !vendapro || product.id !== vendapro.id).slice(0, 3);
-
-      if (relatedProducts.length) {
-        relatedContainer.innerHTML = relatedProducts.map(buildProductCard).join("");
-      } else {
-        relatedContainer.innerHTML =
-          '<article class="panel quick-card"><h3>Sem produtos relacionados</h3><p>Cadastre novos produtos na área da empresa.</p></article>';
-      }
-    }
-  }
-
-  function fillDownloads(content) {
-    const products = getVisibleProducts(content);
-    const container = document.getElementById("js-download-products");
+  function renderCollection(containerId, items, renderer) {
+    const container = document.getElementById(containerId);
 
     if (!container) {
       return;
     }
 
-    if (!products.length) {
-      container.innerHTML =
-        '<article class="panel item-card"><h3>Sem downloads cadastrados</h3><p>Use a área da empresa para adicionar produtos e links de download.</p></article>';
+    if (!items.length) {
+      container.innerHTML = "";
       return;
     }
 
-    container.innerHTML = products.map(buildProductCard).join("");
+    container.innerHTML = items.map(renderer).join("");
   }
 
-  function fillContact(content) {
-    const company = (content.contacts && content.contacts.company) || {};
-    const developer = (content.contacts && content.contacts.developer) || {};
+  function fillShared(content) {
+    setTextAll(".js-company-name", safe(content.company.name));
+    setTextAll(".js-company-email-text", safe(content.company.email));
+    setTextAll(".js-company-whatsapp-text", safe(content.company.whatsapp));
+    setTextAll("#js-company-summary", safe(content.company.summary));
 
-    setTextAll(".js-company-name", safeText(company.name, "UDEV - StartUP"));
-    setTextAll(".js-company-email-text", safeText(company.email, "udev.oficial@gmail.com"));
-    setTextAll(".js-company-whatsapp-text", safeText(company.whatsapp, "+55 (63) 98441-2348"));
+    setTextAll(".js-support-email-text", safe(content.support.email));
+    setTextAll(".js-support-phone-text", safe(content.support.phone));
+    setTextAll("#js-support-hours", safe(content.support.hours));
 
-    const companyEmailHref = "mailto:" + safeText(company.email, "udev.oficial@gmail.com");
-    setLinkAll(".js-company-email-link", companyEmailHref);
-    setLinkAll(
-      ".js-company-whatsapp-link",
-      safeText(company.whatsappUrl, links.whatsapp || "https://wa.me/5563984412348")
+    setTextAll(".js-dev-name", safe(content.developer.name));
+    setTextAll(".js-dev-role", safe(content.developer.role));
+    setTextAll(".js-dev-email-text", safe(content.developer.email));
+    setTextAll(".js-dev-phone", safe(content.developer.phone));
+
+    setTextAll("#js-sales-line", safe(content.sales.line));
+
+    setHrefAll(".js-company-email-link", content.company.email ? "mailto:" + content.company.email : "#");
+    setHrefAll(".js-company-whatsapp-link", safe(content.company.whatsappUrl, "#"));
+    setHrefAll(".js-company-instagram-link", safe(content.company.instagram, "#"));
+
+    setHrefAll(".js-support-email-link", content.support.email ? "mailto:" + content.support.email : "#");
+    setHrefAll(".js-support-phone-link", content.support.phone ? "tel:" + content.support.phone.replace(/[^+\d]/g, "") : "#");
+    setHrefAll(".js-dev-email-link", content.developer.email ? "mailto:" + content.developer.email : "#");
+  }
+
+  function fillHome(content) {
+    setTextAll(".js-hero-eyebrow", safe(content.hero.eyebrow));
+    setTextAll(".js-hero-headline", safe(content.hero.headline));
+    setTextAll(".js-hero-subheadline", safe(content.hero.subheadline));
+
+    const pointsContainer = document.getElementById("js-hero-points");
+
+    if (pointsContainer) {
+      const points = Array.isArray(content.hero.points) ? content.hero.points.filter(Boolean) : [];
+      pointsContainer.innerHTML = points.map((point) => "<span>" + escapeHtml(point) + "</span>").join("");
+    }
+
+    if (content.banners.length > 0) {
+      setTextAll("#js-home-highlight-title", safe(content.banners[0].title));
+      setTextAll("#js-home-highlight-description", safe(content.banners[0].description));
+
+      const tagsContainer = document.getElementById("js-home-highlight-tags");
+      if (tagsContainer) {
+        tagsContainer.innerHTML = content.banners
+          .slice(0, 3)
+          .map((banner) => '<div class="tag">' + escapeHtml(safe(banner.tag || banner.title)) + "</div>")
+          .join("");
+      }
+    }
+
+    renderCollection("js-banner-list", content.banners, buildSimpleCard);
+    renderCollection("js-services-list", content.services.filter((item) => item.visible !== false), buildSimpleCard);
+
+    const products = visibleProducts(content);
+    const featured = products.filter((product) => product.featured);
+    renderCollection("js-featured-products", featured.length ? featured : products.slice(0, 6), buildProductCard);
+  }
+
+  function fillVendapro(content) {
+    const products = visibleProducts(content);
+    const vendapro =
+      products.find((item) => safe(item.id) === "vendapro-saas") ||
+      products.find((item) => /vendapro/i.test(safe(item.name))) ||
+      products[0];
+
+    if (!vendapro) {
+      return;
+    }
+
+    setTextAll(".js-vendapro-name", safe(vendapro.name));
+    setTextAll(".js-vendapro-subtitle", safe(vendapro.subtitle));
+    setTextAll(".js-vendapro-description", safe(vendapro.description));
+    setTextAll(".js-vendapro-long", safe(vendapro.longDescription || vendapro.description));
+
+    const downloadHref = productDownloadHref(vendapro);
+    const downloadButton = document.getElementById("js-vendapro-download");
+    const onlineButton = document.getElementById("js-vendapro-online");
+
+    if (downloadButton && downloadHref) {
+      downloadButton.setAttribute("href", downloadHref);
+    }
+
+    if (onlineButton && vendapro.onlineUrl) {
+      onlineButton.setAttribute("href", absoluteUrl(vendapro.onlineUrl));
+    }
+
+    const metaContainer = document.getElementById("js-vendapro-meta");
+
+    if (metaContainer) {
+      const tags = [vendapro.category, vendapro.subtitle].filter(Boolean);
+      metaContainer.innerHTML = tags.map((tag) => "<span>" + escapeHtml(tag) + "</span>").join("");
+    }
+
+    renderCollection(
+      "js-vendapro-related-products",
+      products.filter((item) => item.id !== vendapro.id).slice(0, 4),
+      buildProductCard
     );
-    setLinkAll(
-      ".js-company-instagram-link",
-      safeText(company.instagram, links.instagram || "https://www.instagram.com/udev.oficial/")
-    );
+  }
 
-    setTextAll(".js-dev-name", safeText(developer.name, "Pedro Henrique Santos Silva"));
-    setTextAll(".js-dev-role", safeText(developer.role, "Desenvolvedor / CO-CEO"));
-    setTextAll(".js-dev-email-text", safeText(developer.email, "pedrohenrique.dev.contato@gmail.com"));
-    setTextAll(".js-dev-phone", safeText(developer.phone, "+55 (63) 98441-2348"));
-    setLinkAll(".js-dev-email-link", "mailto:" + safeText(developer.email, "pedrohenrique.dev.contato@gmail.com"));
+  function fillDownloads(content) {
+    renderCollection("js-download-products", visibleProducts(content), buildProductCard);
   }
 
   function applyByPage(content) {
-    const page = document.body.getAttribute("data-page") || "";
+    fillShared(content);
 
-    fillContact(content);
+    const page = document.body.getAttribute("data-page");
 
     if (page === "home") {
       fillHome(content);
-      return;
     }
 
     if (page === "vendapro") {
       fillVendapro(content);
-      return;
     }
 
     if (page === "downloads") {
       fillDownloads(content);
-      return;
     }
   }
 
   document.addEventListener("DOMContentLoaded", async function () {
-    const content = await loadContent();
+    const raw = await loadRawContent();
+    const content = normalizeContent(raw);
 
-    if (!content) {
+    if (!hasPublicContent(content)) {
+      blankPage();
       return;
     }
 
