@@ -3,44 +3,95 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Entre em contato com a Udev.">
+  <meta name="description" content="Canal oficial de contato da Udev.">
+  <meta name="theme-color" content="#070712">
   <title>Contato | Udev</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=Sora:wght@600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../assets/css/style.css">
 </head>
 <body>
   <header class="site-header">
     <div class="container nav-wrap">
-      <a class="brand" href="../">Udev</a>
-      <nav class="nav-links" aria-label="Navegação principal">
+      <a class="brand" href="../"><span class="brand-mark">U</span>dev</a>
+      <nav class="nav-menu" aria-label="Navegação principal">
+        <a href="../">Home</a>
         <a href="../vendapro/">VendaPro</a>
         <a href="../downloads/">Downloads</a>
         <a aria-current="page" href="../contato/">Contato</a>
+        <a class="btn btn-outline nav-cta" href="../downloads/">Download App</a>
       </nav>
     </div>
   </header>
 
-  <main class="container section page-content">
-    <p class="eyebrow">Canal oficial</p>
-    <h1>Contato</h1>
-    <p>
-      Estamos prontos para apoiar a evolução digital da sua operação.
-      Fale com a Udev para parcerias, implantação de soluções e atendimento institucional.
-    </p>
+  <main>
+    <section class="inner-hero">
+      <div class="container" data-reveal>
+        <p class="eyebrow">Canal oficial</p>
+        <h1>Contato Udev</h1>
+        <p>Fale com nossa equipe para implantação do VendaPro, projetos sob medida e parcerias estratégicas de tecnologia.</p>
+        <div class="breadcrumb">Home <span>›</span> Contato</div>
+      </div>
+    </section>
 
-    <section class="card soft-card contact-card">
-      <a class="btn btn-primary" data-link-key="whatsapp" target="_blank" rel="noopener noreferrer" href="#">Falar no WhatsApp</a>
-      <a class="email-link" data-link-key="email" href="mailto:contato@udev.dev.br">contato@udev.dev.br</a>
-      <p class="muted">Atendimento comercial em horário útil. Resposta prioritária para parceiros e empresas.</p>
+    <section class="section-tight section">
+      <div class="container contact-grid" data-reveal>
+        <article class="panel contact-card">
+          <h3>Atendimento por WhatsApp</h3>
+          <p>Canal rápido para demandas comerciais e dúvidas iniciais sobre nossas soluções.</p>
+          <div class="contact-row">
+            <a class="btn btn-primary" data-link-key="whatsapp" target="_blank" rel="noopener noreferrer" href="#">Abrir WhatsApp</a>
+          </div>
+        </article>
+
+        <article class="panel contact-card">
+          <h3>E-mail institucional</h3>
+          <p>Envie requisitos, escopo de projeto ou detalhes técnicos para análise da equipe.</p>
+          <div class="contact-row">
+            <a class="btn btn-secondary" data-link-key="email" href="mailto:contato@udev.dev.br">Enviar e-mail</a>
+          </div>
+        </article>
+
+        <article class="panel contact-card">
+          <h3>Mensagem institucional</h3>
+          <p>Estamos prontos para apoiar sua evolução digital com soluções robustas, integração eficiente e foco em impacto de negócio.</p>
+          <div class="notice-card">Prioridade para empresas em implantação e parceiros de longo prazo.</div>
+        </article>
+      </div>
     </section>
   </main>
 
   <footer class="site-footer">
-    <div class="container footer-wrap">
-      <p>© <span class="js-year"></span> Udev. Todos os direitos reservados.</p>
-      <p class="muted">Tecnologia aplicada a resultados.</p>
+    <div class="container footer-grid">
+      <section class="footer-col">
+        <a class="brand" href="../"><span class="brand-mark">U</span>dev</a>
+        <p>Startup focada em produtos digitais, automação e soluções SaaS para empresas em crescimento.</p>
+      </section>
+
+      <section class="footer-col">
+        <h3>Newsletter Udev</h3>
+        <p>Receba novidades de produto e atualizações institucionais.</p>
+        <form class="newsletter-form js-newsletter-form">
+          <input class="js-newsletter-email" type="email" placeholder="Seu melhor e-mail" required>
+          <button class="btn btn-primary btn-block" type="submit">Inscrever</button>
+        </form>
+        <p class="small muted">Sem backend: a inscrição é encaminhada por e-mail.</p>
+      </section>
+
+      <section class="footer-col">
+        <h3>Contato</h3>
+        <div class="footer-links">
+          <a data-link-key="whatsapp" target="_blank" rel="noopener noreferrer" href="#">WhatsApp Comercial</a>
+          <a data-link-key="email" href="mailto:contato@udev.dev.br">contato@udev.dev.br</a>
+          <a href="../downloads/">Downloads Oficiais</a>
+        </div>
+      </section>
+    </div>
+
+    <div class="container footer-bottom">
+      <span>© <span class="js-year"></span> Udev. Todos os direitos reservados.</span>
+      <span>Tecnologia aplicada a crescimento previsível.</span>
     </div>
   </footer>
 

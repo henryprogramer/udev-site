@@ -1,11 +1,16 @@
 # Udev Site Institucional
 
-Site institucional estático da Udev, preparado para hospedagem no GitHub Pages.
+Site institucional estático oficial da Udev, publicado no GitHub Pages.
+
+- Repositório: `udev-site`
+- Stack: HTML + CSS + JavaScript puro (sem backend)
+- Domínio customizado configurado: `unidev.dev.br`
 
 ## Estrutura
 
 ```text
 /
+├── CNAME
 ├── index.html
 ├── assets/
 │   ├── css/
@@ -26,7 +31,7 @@ Todos os links externos ficam centralizados em:
 
 - `assets/js/links.js`
 
-Edite somente os valores de URL nas chaves existentes:
+Edite somente os valores das URLs, mantendo as chaves:
 
 - `vendaproDownload`
 - `vendaproOnline`
@@ -42,32 +47,41 @@ Exemplo:
 vendaproDownload: "https://drive.google.com/file/d/SEU_ARQUIVO/view"
 ```
 
-## Publicar no GitHub Pages
+## Publicação no GitHub Pages
 
-1. Faça push da branch `main` para o GitHub.
-2. No repositório, abra `Settings` > `Pages`.
-3. Em `Build and deployment`:
+Este projeto está configurado para publicar com:
+
+- Branch: `main`
+- Pasta: `/ (root)`
+
+Se precisar reconfigurar:
+
+1. Acesse `Settings` > `Pages` no GitHub.
+2. Em `Build and deployment`, selecione:
    - `Source`: `Deploy from a branch`
    - `Branch`: `main`
    - `Folder`: `/ (root)`
-4. Salve as configurações.
-5. Aguarde a publicação e acesse a URL gerada pelo GitHub Pages.
+3. Salve e aguarde o build.
 
-Formato esperado da URL:
+## Domínio próprio: unidev.dev.br
 
-- `https://SEU_USUARIO.github.io/udev-site/`
+O domínio está definido no arquivo raiz `CNAME`:
 
-## Conectar domínio próprio
+```text
+unidev.dev.br
+```
 
-Quando quiser usar `unidev.dev.br` ou `udev.dev.br`:
+No provedor DNS do domínio `dev.br`, o registro recomendado é:
 
-1. Em `Settings` > `Pages`, informe o domínio no campo `Custom domain`.
-2. No provedor DNS, configure:
-   - `CNAME` para subdomínio (ex.: `www` -> `SEU_USUARIO.github.io`), ou
-   - `A/ALIAS` para domínio raiz conforme IPs oficiais do GitHub Pages.
-3. Crie/atualize o arquivo `CNAME` na raiz do projeto com o domínio final.
-4. Aguarde propagação DNS e habilite `Enforce HTTPS` quando disponível.
+- Tipo: `CNAME`
+- Host/Nome: `unidev`
+- Valor/Destino: `henryprogramer.github.io`
+
+Após propagação DNS:
+
+1. Verifique `Settings` > `Pages` no GitHub.
+2. Ative `Enforce HTTPS` quando disponível.
 
 ## Observação importante
 
-Este repositório não armazena arquivos grandes. Downloads devem ser distribuídos por links externos (Google Drive, CDN ou servidor dedicado).
+Este repositório **não** armazena arquivos grandes. Downloads devem sempre apontar para links externos (Google Drive, CDN ou outro servidor dedicado).

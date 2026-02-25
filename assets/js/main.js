@@ -26,8 +26,67 @@
     });
   }
 
+  function setupRevealAnimations() {
+    const revealElements = document.querySelectorAll("[data-reveal]");
+
+    if (!revealElements.length) {
+      return;
+    }
+
+    if (!("IntersectionObserver" in window)) {
+      revealElements.forEach((el) => el.classList.add("is-visible"));
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries, obs) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) {
+            return;
+          }
+
+          entry.target.classList.add("is-visible");
+          obs.unobserve(entry.target);
+        });
+      },
+      { threshold: 0.15 }
+    );
+
+    revealElements.forEach((el) => observer.observe(el));
+  }
+
+  function setupNewsletterForm() {
+    const form = document.querySelector(".js-newsletter-form");
+    const input = document.querySelector(".js-newsletter-email");
+    const emailLink = externalLinks.email || "mailto:contato@udev.dev.br";
+
+    if (!form || !input || !emailLink.startsWith("mailto:")) {
+      return;
+    }
+
+    form.addEventListener("submit", function (event) {
+      event.preventDefault();
+
+      if (!input.value || !input.checkValidity()) {
+        input.reportValidity();
+        return;
+      }
+
+      const message = encodeURIComponent(
+        "Olá, quero receber novidades da Udev. Meu e-mail para contato é: " +
+          input.value.trim()
+      );
+
+      const separator = emailLink.includes("?") ? "&" : "?";
+      window.location.href =
+        emailLink + separator + "subject=Newsletter%20Udev&body=" + message;
+    });
+  }
+
   document.addEventListener("DOMContentLoaded", function () {
     applyExternalLinks();
     applyCurrentYear();
+    setupRevealAnimations();
+    setupNewsletterForm();
   });
 })();

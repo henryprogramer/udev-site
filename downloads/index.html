@@ -3,58 +3,98 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Central de downloads oficiais da Udev.">
+  <meta name="description" content="Downloads oficiais da Udev por links externos.">
+  <meta name="theme-color" content="#070712">
   <title>Downloads | Udev</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=Sora:wght@600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../assets/css/style.css">
 </head>
 <body>
   <header class="site-header">
     <div class="container nav-wrap">
-      <a class="brand" href="../">Udev</a>
-      <nav class="nav-links" aria-label="Navegação principal">
+      <a class="brand" href="../"><span class="brand-mark">U</span>dev</a>
+      <nav class="nav-menu" aria-label="Navegação principal">
+        <a href="../">Home</a>
         <a href="../vendapro/">VendaPro</a>
         <a aria-current="page" href="../downloads/">Downloads</a>
         <a href="../contato/">Contato</a>
+        <a class="btn btn-outline nav-cta" href="../downloads/">Download App</a>
       </nav>
     </div>
   </header>
 
-  <main class="container section page-content">
-    <p class="eyebrow">Distribuição oficial</p>
-    <h1>Downloads</h1>
-    <p>
-      Todos os arquivos são distribuídos por links externos (Drive, CDN ou outro servidor),
-      mantendo o repositório leve e rápido.
-    </p>
+  <main>
+    <section class="inner-hero">
+      <div class="container" data-reveal>
+        <p class="eyebrow">Distribuição oficial</p>
+        <h1>Downloads</h1>
+        <p>Os arquivos são hospedados externamente para manter este repositório leve, seguro e com deploy rápido no GitHub Pages.</p>
+        <div class="breadcrumb">Home <span>›</span> Downloads</div>
+      </div>
+    </section>
 
-    <section class="grid cards-grid">
-      <article class="card">
-        <h2>VendaPro Desktop</h2>
-        <p>Aplicativo para equipes comerciais com foco em produtividade e acompanhamento operacional.</p>
-        <a class="btn btn-secondary" data-link-key="downloadVendaproDesktop" target="_blank" rel="noopener noreferrer" href="#">Download</a>
-      </article>
+    <section class="section-tight section">
+      <div class="container download-grid" data-reveal>
+        <article class="panel item-card">
+          <h3>VendaPro Desktop</h3>
+          <p>Cliente de operação comercial para equipes que precisam de performance e estabilidade em ambiente corporativo.</p>
+          <a class="btn btn-secondary" data-link-key="downloadVendaproDesktop" target="_blank" rel="noopener noreferrer" href="#">Baixar versão desktop</a>
+        </article>
 
-      <article class="card">
-        <h2>VendaPro Mobile</h2>
-        <p>Versão Android para gestão de visitas, acompanhamento de clientes e atualização de status em campo.</p>
-        <a class="btn btn-secondary" data-link-key="downloadVendaproAndroid" target="_blank" rel="noopener noreferrer" href="#">Download</a>
-      </article>
+        <article class="panel item-card">
+          <h3>VendaPro Mobile</h3>
+          <p>Versão Android para atualização de oportunidades, acompanhamento em campo e rotinas de visita.</p>
+          <a class="btn btn-secondary" data-link-key="downloadVendaproAndroid" target="_blank" rel="noopener noreferrer" href="#">Baixar no Android</a>
+        </article>
 
-      <article class="card">
-        <h2>Guia de Implementação</h2>
-        <p>Documento técnico com requisitos, processo de implantação e melhores práticas de uso.</p>
-        <a class="btn btn-secondary" data-link-key="downloadImplementationGuide" target="_blank" rel="noopener noreferrer" href="#">Download</a>
-      </article>
+        <article class="panel item-card">
+          <h3>Guia de Implementação</h3>
+          <p>Material técnico com requisitos, boas práticas de implantação e checklist de adoção da plataforma.</p>
+          <a class="btn btn-secondary" data-link-key="downloadImplementationGuide" target="_blank" rel="noopener noreferrer" href="#">Baixar guia técnico</a>
+        </article>
+      </div>
+    </section>
+
+    <section class="section-compact">
+      <div class="container panel contact-card" data-reveal>
+        <h3>Observação importante</h3>
+        <p>Não armazenamos binários grandes neste repositório. Todos os downloads apontam para links externos configuráveis em `assets/js/links.js`.</p>
+      </div>
     </section>
   </main>
 
   <footer class="site-footer">
-    <div class="container footer-wrap">
-      <p>© <span class="js-year"></span> Udev. Todos os direitos reservados.</p>
-      <p class="muted">Tecnologia aplicada a resultados.</p>
+    <div class="container footer-grid">
+      <section class="footer-col">
+        <a class="brand" href="../"><span class="brand-mark">U</span>dev</a>
+        <p>Startup focada em produtos digitais, automação e soluções SaaS para empresas em crescimento.</p>
+      </section>
+
+      <section class="footer-col">
+        <h3>Newsletter Udev</h3>
+        <p>Receba novidades de produto e atualizações institucionais.</p>
+        <form class="newsletter-form js-newsletter-form">
+          <input class="js-newsletter-email" type="email" placeholder="Seu melhor e-mail" required>
+          <button class="btn btn-primary btn-block" type="submit">Inscrever</button>
+        </form>
+        <p class="small muted">Sem backend: a inscrição é encaminhada por e-mail.</p>
+      </section>
+
+      <section class="footer-col">
+        <h3>Contato</h3>
+        <div class="footer-links">
+          <a data-link-key="whatsapp" target="_blank" rel="noopener noreferrer" href="#">WhatsApp Comercial</a>
+          <a data-link-key="email" href="mailto:contato@udev.dev.br">contato@udev.dev.br</a>
+          <a href="../downloads/">Downloads Oficiais</a>
+        </div>
+      </section>
+    </div>
+
+    <div class="container footer-bottom">
+      <span>© <span class="js-year"></span> Udev. Todos os direitos reservados.</span>
+      <span>Tecnologia aplicada a crescimento previsível.</span>
     </div>
   </footer>
 
