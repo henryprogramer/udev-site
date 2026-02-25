@@ -1,0 +1,9 @@
+# Credenciais locais (não publicar)
+credentials.json
+credenciais.json
+client_secret*.json
+
+# Arquivos temporários
+*.log
+*.tmp
+.DS_Store

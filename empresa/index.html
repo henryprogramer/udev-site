@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Área da empresa Udev para gestão de conteúdo institucional.">
+  <meta name="theme-color" content="#070712">
+  <title>Área da Empresa | Udev</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=Sora:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body data-page="empresa">
+  <header class="site-header">
+    <div class="container nav-wrap">
+      <a class="brand" href="../"><span class="brand-mark">U</span>dev</a>
+      <nav class="nav-menu" aria-label="Navegação principal">
+        <a href="../">Site público</a>
+        <a href="../vendapro/">VendaPro</a>
+        <a href="../downloads/">Downloads</a>
+        <a href="../contato/">Contato</a>
+        <a aria-current="page" class="btn btn-outline nav-cta" href="./">Área da empresa</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="inner-hero">
+      <div class="container" data-reveal>
+        <p class="eyebrow">Painel interno</p>
+        <h1>Gestão do site institucional</h1>
+        <p>Cadastre produtos, banners, contatos e informações institucionais. Sincronize o conteúdo e artes pelo Google Drive.</p>
+        <div class="breadcrumb">Home <span>›</span> Área da empresa</div>
+      </div>
+    </section>
+
+    <section class="section-tight section">
+      <div class="container content-wrap">
+        <article class="panel" data-reveal>
+          <h2>Google Drive</h2>
+          <p class="lead">Conexão OAuth com escopo Drive para upload de artes e gravação do JSON de conteúdo.</p>
+          <div class="admin-actions">
+            <button class="btn btn-primary" id="js-connect-google" type="button">Conectar Google</button>
+            <button class="btn btn-secondary" id="js-load-drive" type="button">Carregar JSON do Drive</button>
+            <button class="btn btn-secondary" id="js-save-drive" type="button">Salvar JSON no Drive</button>
+          </div>
+          <p class="small muted" id="js-auth-status">Não autenticado.</p>
+          <p class="small muted" id="js-drive-status">Arquivo padrão: udev-site-content.json</p>
+          <label class="admin-field" for="js-drive-file-id">
+            <span>ID do arquivo no Drive (opcional)</span>
+            <input id="js-drive-file-id" type="text" placeholder="Preenchido automaticamente após salvar">
+          </label>
+        </article>
+
+        <article class="panel" data-reveal>
+          <h2>Publicação e backup</h2>
+          <p class="lead">Controle local do conteúdo antes de publicar no ambiente final.</p>
+          <div class="admin-actions">
+            <button class="btn btn-secondary" id="js-load-site-data" type="button">Carregar dados atuais</button>
+            <button class="btn btn-secondary" id="js-save-draft" type="button">Salvar rascunho local</button>
+            <button class="btn btn-secondary" id="js-export-json" type="button">Exportar JSON</button>
+            <button class="btn btn-secondary" id="js-import-json-btn" type="button">Importar JSON</button>
+            <input id="js-import-json" type="file" accept="application/json" hidden>
+            <button class="btn btn-primary" id="js-apply-preview" type="button">Aplicar pré-visualização local</button>
+          </div>
+          <p class="small muted">Pré-visualização local: abra o site com `?preview=1`, ex.: <code>/index.html?preview=1</code>.</p>
+          <p class="small muted" id="js-local-status">Nenhuma alteração salva localmente.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section-compact">
+      <div class="container admin-stack" data-reveal>
+        <article class="panel admin-section">
+          <h2>Informações institucionais</h2>
+          <div class="admin-form-grid">
+            <label class="admin-field">
+              <span>Nome da empresa</span>
+              <input id="js-company-name" type="text" placeholder="UDEV - StartUP">
+            </label>
+            <label class="admin-field">
+              <span>E-mail da empresa</span>
+              <input id="js-company-email" type="email" placeholder="udev.oficial@gmail.com">
+            </label>
+            <label class="admin-field">
+              <span>Instagram</span>
+              <input id="js-company-instagram" type="url" placeholder="https://www.instagram.com/udev.oficial/">
+            </label>
+            <label class="admin-field">
+              <span>WhatsApp (texto)</span>
+              <input id="js-company-whatsapp" type="text" placeholder="+55 (63) 98441-2348">
+            </label>
+            <label class="admin-field admin-field-full">
+              <span>Link WhatsApp</span>
+              <input id="js-company-whatsapp-url" type="url" placeholder="https://wa.me/...">
+            </label>
+            <label class="admin-field admin-field-full">
+              <span>Hero: Título principal</span>
+              <input id="js-hero-headline" type="text" placeholder="Soluções inteligentes em software e tecnologia">
+            </label>
+            <label class="admin-field admin-field-full">
+              <span>Hero: Subtítulo</span>
+              <textarea id="js-hero-subheadline" rows="3" placeholder="Descrição principal da startup"></textarea>
+            </label>
+          </div>
+        </article>
+
+        <article class="panel admin-section">
+          <h2>Contato do desenvolvedor / CO-CEO</h2>
+          <div class="admin-form-grid">
+            <label class="admin-field">
+              <span>Nome</span>
+              <input id="js-dev-name" type="text" placeholder="Pedro Henrique Santos Silva">
+            </label>
+            <label class="admin-field">
+              <span>Cargo</span>
+              <input id="js-dev-role" type="text" placeholder="Desenvolvedor / CO-CEO">
+            </label>
+            <label class="admin-field">
+              <span>E-mail</span>
+              <input id="js-dev-email" type="email" placeholder="pedrohenrique.dev.contato@gmail.com">
+            </label>
+            <label class="admin-field">
+              <span>Telefone</span>
+              <input id="js-dev-phone" type="text" placeholder="+55 (63) 98441-2348">
+            </label>
+          </div>
+        </article>
+
+        <article class="panel admin-section">
+          <h2>Banners</h2>
+          <div class="admin-form-grid">
+            <label class="admin-field">
+              <span>Título</span>
+              <input id="js-banner-title" type="text" placeholder="Título do banner">
+            </label>
+            <label class="admin-field">
+              <span>Tag</span>
+              <input id="js-banner-tag" type="text" placeholder="Produto principal">
+            </label>
+            <label class="admin-field admin-field-full">
+              <span>Descrição</span>
+              <textarea id="js-banner-description" rows="2" placeholder="Resumo do banner"></textarea>
+            </label>
+            <label class="admin-field">
+              <span>Texto do botão</span>
+              <input id="js-banner-cta-label" type="text" placeholder="Conhecer agora">
+            </label>
+            <label class="admin-field">
+              <span>Link do botão</span>
+              <input id="js-banner-cta-url" type="text" placeholder="/vendapro/ ou https://...">
+            </label>
+            <label class="admin-field admin-field-full">
+              <span>URL da imagem</span>
+              <input id="js-banner-image-url" type="url" placeholder="https://drive.google.com/uc?export=view&id=...">
+            </label>
+          </div>
+          <div class="admin-actions">
+            <button class="btn btn-secondary" id="js-upload-banner-image" type="button">Upload imagem (Drive)</button>
+            <input id="js-banner-image-file" type="file" accept="image/*" hidden>
+            <button class="btn btn-primary" id="js-add-banner" type="button">Adicionar banner</button>
+            <button class="btn btn-outline" id="js-clear-banner-form" type="button">Limpar formulário</button>
+          </div>
+          <div id="js-banner-admin-list" class="admin-list"></div>
+        </article>
+
+        <article class="panel admin-section">
+          <h2>Produtos</h2>
+          <div class="admin-form-grid">
+            <label class="admin-field">
+              <span>ID</span>
+              <input id="js-product-id" type="text" placeholder="vendapro-desktop">
+            </label>
+            <label class="admin-field">
+              <span>Nome</span>
+              <input id="js-product-name" type="text" placeholder="Nome do produto">
+            </label>
+            <label class="admin-field">
+              <span>Subtítulo</span>
+              <input id="js-product-subtitle" type="text" placeholder="Plataforma web comercial">
+            </label>
+            <label class="admin-field">
+              <span>Categoria</span>
+              <input id="js-product-category" type="text" placeholder="SaaS / Desktop / Mobile">
+            </label>
+            <label class="admin-field">
+              <span>Badge</span>
+              <input id="js-product-badge" type="text" placeholder="Online / Android / PDF">
+            </label>
+            <label class="admin-field">
+              <span>Download URL</span>
+              <input id="js-product-download-url" type="url" placeholder="https://drive.google.com/...">
+            </label>
+            <label class="admin-field">
+              <span>Online URL</span>
+              <input id="js-product-online-url" type="url" placeholder="https://app.vendapro.com.br/">
+            </label>
+            <label class="admin-field">
+              <span>URL da imagem</span>
+              <input id="js-product-image-url" type="url" placeholder="https://drive.google.com/uc?export=view&id=...">
+            </label>
+            <label class="admin-field admin-field-full">
+              <span>Descrição</span>
+              <textarea id="js-product-description" rows="3" placeholder="Descrição do produto"></textarea>
+            </label>
+            <label class="admin-checkbox">
+              <input id="js-product-visible" type="checkbox" checked>
+              <span>Produto visível</span>
+            </label>
+            <label class="admin-checkbox">
+              <input id="js-product-featured" type="checkbox">
+              <span>Produto em destaque</span>
+            </label>
+          </div>
+          <div class="admin-actions">
+            <button class="btn btn-secondary" id="js-upload-product-image" type="button">Upload imagem (Drive)</button>
+            <input id="js-product-image-file" type="file" accept="image/*" hidden>
+            <button class="btn btn-primary" id="js-add-product" type="button">Adicionar produto</button>
+            <button class="btn btn-outline" id="js-clear-product-form" type="button">Limpar formulário</button>
+          </div>
+          <div id="js-product-admin-list" class="admin-list"></div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-bottom">
+      <span>© <span class="js-year"></span> UDEV - StartUP. Área interna de gestão.</span>
+      <span>Use com conta corporativa autorizada.</span>
+    </div>
+  </footer>
+
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <script src="../assets/js/links.js"></script>
+  <script src="../assets/js/empresa-admin.js"></script>
+  <script src="../assets/js/main.js"></script>
+</body>
+</html>

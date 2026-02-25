@@ -11,7 +11,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=Sora:wght@600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/style.css">
 </head>
-<body>
+<body data-page="home">
   <header class="site-header">
     <div class="container nav-wrap">
       <a class="brand" href="./"><span class="brand-mark">U</span>dev</a>
@@ -29,9 +29,9 @@
     <section class="section">
       <div class="container hero-grid">
         <div data-reveal>
-          <p class="eyebrow">Startup de software</p>
-          <h1 class="hero-title">Soluções inteligentes em software e tecnologia</h1>
-          <p class="lead">A Udev entrega produtos digitais para acelerar vendas, operação e tomada de decisão com arquitetura escalável e foco em resultado.</p>
+          <p class="eyebrow js-hero-eyebrow">Startup de software</p>
+          <h1 class="hero-title js-hero-headline">Soluções inteligentes em software e tecnologia</h1>
+          <p class="lead js-hero-subheadline">A Udev entrega produtos digitais para acelerar vendas, operação e tomada de decisão com arquitetura escalável e foco em resultado.</p>
           <div class="hero-actions">
             <a class="btn btn-primary" href="./vendapro/">Conhecer o VendaPro</a>
             <a class="btn btn-secondary" href="./downloads/">Downloads</a>
@@ -40,18 +40,18 @@
           <div class="hero-points">
             <span>Site institucional 100% estático e rápido</span>
             <span>Distribuição de arquivos por links externos</span>
-            <span>Pronto para domínio próprio no GitHub Pages</span>
+            <span>Painel da empresa para gestão de conteúdo</span>
           </div>
         </div>
 
         <article class="hero-aside panel" data-reveal>
           <p class="eyebrow">Ecossistema Udev</p>
-          <h3>VendaPro como núcleo da operação comercial</h3>
-          <p>Implantação orientada por dados, com monitoramento contínuo e experiência pensada para equipes de alta performance.</p>
+          <h3>Gestão de conteúdo com armazenamento no Google Drive</h3>
+          <p>A área da empresa permite cadastrar produtos, banners e informações institucionais com sincronização de dados e artes.</p>
           <div class="tag-grid">
             <div class="tag">SaaS de vendas</div>
-            <div class="tag">Automação de processos</div>
-            <div class="tag">Métricas em tempo real</div>
+            <div class="tag">Catálogo de produtos</div>
+            <div class="tag">Banners gerenciáveis</div>
           </div>
         </article>
       </div>
@@ -59,10 +59,36 @@
 
     <section class="section-tight">
       <div class="container panel title-strip" data-reveal>
-        <p class="eyebrow">Depoimentos</p>
-        <h2>O que nossos clientes relatam sobre a Udev</h2>
-        <p>Histórias reais de empresas que modernizaram operação comercial com o ecossistema Udev.</p>
+        <p class="eyebrow">Banners</p>
+        <h2>Comunicados e anúncios de produto</h2>
+        <p>Atualizados pelo painel da empresa para exibição imediata no site institucional.</p>
         <div class="breadcrumb">Home <span>›</span> Institucional</div>
+      </div>
+    </section>
+
+    <section class="section-compact">
+      <div id="js-banner-list" class="container quick-grid" data-reveal>
+        <article class="panel quick-card">
+          <h3>Carregando banners...</h3>
+          <p>Aguarde enquanto buscamos os dados mais recentes.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section-tight">
+      <div class="container panel title-strip" data-reveal>
+        <p class="eyebrow">Produtos</p>
+        <h2>Prateleira digital da Udev</h2>
+        <p>Produtos e soluções visíveis para clientes, parceiros e patrocinadores.</p>
+      </div>
+    </section>
+
+    <section class="section-compact">
+      <div id="js-featured-products" class="container quick-grid" data-reveal>
+        <article class="panel quick-card">
+          <h3>Carregando produtos...</h3>
+          <p>O catálogo será preenchido com os dados da empresa.</p>
+        </article>
       </div>
     </section>
 
@@ -76,15 +102,15 @@
           </article>
 
           <article class="panel quote-panel" data-reveal>
-            <div class="stars">★★★★★</div>
-            <blockquote>
+            <div class="stars js-testimonial-stars">★★★★★</div>
+            <blockquote class="js-testimonial-quote">
               “Com o VendaPro conseguimos centralizar funil, previsão de vendas e acompanhamento do time em uma única plataforma. O ganho de produtividade foi imediato.”
             </blockquote>
             <div class="person">
               <div class="avatar">JD</div>
               <div>
-                <strong>João Duarte</strong>
-                <span>Diretor Comercial</span>
+                <strong class="js-testimonial-name">João Duarte</strong>
+                <span class="js-testimonial-role">Diretor Comercial</span>
               </div>
             </div>
           </article>
@@ -96,46 +122,6 @@
           <article class="metric"><strong>260K</strong><span>Registros operacionais/mês</span></article>
           <article class="metric"><strong>380M</strong><span>Volume comercial analisado</span></article>
         </div>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="container download-band">
-        <div class="download-copy" data-reveal>
-          <p class="eyebrow">Versões oficiais</p>
-          <h2>Baixe a versão mais recente do VendaPro</h2>
-          <p>Distribuímos instaladores por links externos para manter este repositório enxuto. Escolha a versão e inicie sua operação digital.</p>
-          <div class="store-actions">
-            <a class="store-badge" data-link-key="downloadVendaproDesktop" target="_blank" rel="noopener noreferrer" href="#">Baixar para Desktop</a>
-            <a class="store-badge" data-link-key="downloadVendaproAndroid" target="_blank" rel="noopener noreferrer" href="#">Google Play</a>
-          </div>
-        </div>
-
-        <div class="device-stage" data-reveal>
-          <div class="device-orb"></div>
-          <div class="device-phone left"><div class="device-screen"></div></div>
-          <div class="device-phone right"><div class="device-screen"></div></div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section-compact">
-      <div class="container quick-grid" data-reveal>
-        <article class="panel quick-card">
-          <h3>Landing do VendaPro</h3>
-          <p>Conheça a proposta, funcionalidades e opções de acesso do SaaS.</p>
-          <a class="text-link" href="./vendapro/">Abrir página</a>
-        </article>
-        <article class="panel quick-card">
-          <h3>Central de downloads</h3>
-          <p>Área institucional para distribuição de versões e materiais técnicos.</p>
-          <a class="text-link" href="./downloads/">Abrir página</a>
-        </article>
-        <article class="panel quick-card">
-          <h3>Contato e parcerias</h3>
-          <p>Canal direto com a Udev para implantação, comercial e suporte institucional.</p>
-          <a class="text-link" href="./contato/">Abrir página</a>
-        </article>
       </div>
     </section>
   </main>
@@ -160,20 +146,22 @@
       <section class="footer-col">
         <h3>Contato</h3>
         <div class="footer-links">
-          <a data-link-key="whatsapp" target="_blank" rel="noopener noreferrer" href="#">WhatsApp Comercial</a>
-          <a data-link-key="email" href="mailto:contato@udev.dev.br">contato@udev.dev.br</a>
-          <a href="./downloads/">Downloads Oficiais</a>
+          <a class="js-company-whatsapp-link" target="_blank" rel="noopener noreferrer" href="#">WhatsApp Comercial</a>
+          <a class="js-company-email-link" href="mailto:udev.oficial@gmail.com"><span class="js-company-email-text">udev.oficial@gmail.com</span></a>
+          <a class="js-company-instagram-link" target="_blank" rel="noopener noreferrer" href="https://www.instagram.com/udev.oficial/">Instagram oficial</a>
+          <a href="./empresa/">Área da empresa</a>
         </div>
       </section>
     </div>
 
     <div class="container footer-bottom">
-      <span>© <span class="js-year"></span> Udev. Todos os direitos reservados.</span>
+      <span>© <span class="js-year"></span> <span class="js-company-name">UDEV - StartUP</span>. Todos os direitos reservados.</span>
       <span>Tecnologia aplicada a crescimento previsível.</span>
     </div>
   </footer>
 
   <script src="assets/js/links.js"></script>
+  <script src="assets/js/public-site.js"></script>
   <script src="assets/js/main.js"></script>
 </body>
 </html>

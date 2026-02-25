@@ -11,7 +11,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=Sora:wght@600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../assets/css/style.css">
 </head>
-<body>
+<body data-page="vendapro">
   <header class="site-header">
     <div class="container nav-wrap">
       <a class="brand" href="../"><span class="brand-mark">U</span>dev</a>
@@ -29,8 +29,8 @@
     <section class="inner-hero">
       <div class="container" data-reveal>
         <p class="eyebrow">Produto SaaS</p>
-        <h1>VendaPro</h1>
-        <p>Plataforma para gestão comercial, automação de rotinas e análise de performance em tempo real para times de vendas.</p>
+        <h1 class="js-vendapro-name">VendaPro</h1>
+        <p class="js-vendapro-description">Plataforma para gestão comercial, automação de rotinas e análise de performance em tempo real para times de vendas.</p>
         <div class="breadcrumb">Home <span>›</span> VendaPro</div>
       </div>
     </section>
@@ -38,12 +38,12 @@
     <section class="section-tight section">
       <div class="container content-wrap">
         <article class="panel" data-reveal>
-          <h2>Desempenho comercial com governança</h2>
+          <h2 class="js-vendapro-subtitle">Plataforma web comercial</h2>
           <p class="lead">O VendaPro estrutura o ciclo de vendas da prospecção ao pós-venda, reduzindo perda de contexto e acelerando decisões estratégicas.</p>
           <div class="info-pill">Escalável para equipes em expansão</div>
           <div class="hero-actions">
-            <a class="btn btn-primary" data-link-key="vendaproDownload" target="_blank" rel="noopener noreferrer" href="#">Baixar VendaPro</a>
-            <a class="btn btn-secondary" data-link-key="vendaproOnline" target="_blank" rel="noopener noreferrer" href="#">Acessar versão online</a>
+            <a class="btn btn-primary" id="js-vendapro-download" target="_blank" rel="noopener noreferrer" href="#">Baixar VendaPro</a>
+            <a class="btn btn-secondary" id="js-vendapro-online" target="_blank" rel="noopener noreferrer" href="#">Acessar versão online</a>
           </div>
         </article>
 
@@ -61,18 +61,10 @@
     </section>
 
     <section class="section-compact">
-      <div class="container quick-grid" data-reveal>
+      <div id="js-vendapro-related-products" class="container quick-grid" data-reveal>
         <article class="panel quick-card">
-          <h3>Operação unificada</h3>
-          <p>Equipe comercial e gestão executiva em uma única visão de dados.</p>
-        </article>
-        <article class="panel quick-card">
-          <h3>Ritmo de execução</h3>
-          <p>Rotinas automatizadas para reduzir tarefas manuais do time.</p>
-        </article>
-        <article class="panel quick-card">
-          <h3>Decisão orientada por dados</h3>
-          <p>Indicadores confiáveis para priorizar ações com impacto real.</p>
+          <h3>Carregando produtos relacionados...</h3>
+          <p>Aguarde enquanto sincronizamos os dados da empresa.</p>
         </article>
       </div>
     </section>
@@ -98,20 +90,22 @@
       <section class="footer-col">
         <h3>Contato</h3>
         <div class="footer-links">
-          <a data-link-key="whatsapp" target="_blank" rel="noopener noreferrer" href="#">WhatsApp Comercial</a>
-          <a data-link-key="email" href="mailto:contato@udev.dev.br">contato@udev.dev.br</a>
-          <a href="../downloads/">Downloads Oficiais</a>
+          <a class="js-company-whatsapp-link" target="_blank" rel="noopener noreferrer" href="#">WhatsApp Comercial</a>
+          <a class="js-company-email-link" href="mailto:udev.oficial@gmail.com"><span class="js-company-email-text">udev.oficial@gmail.com</span></a>
+          <a class="js-company-instagram-link" target="_blank" rel="noopener noreferrer" href="https://www.instagram.com/udev.oficial/">Instagram oficial</a>
+          <a href="../empresa/">Área da empresa</a>
         </div>
       </section>
     </div>
 
     <div class="container footer-bottom">
-      <span>© <span class="js-year"></span> Udev. Todos os direitos reservados.</span>
+      <span>© <span class="js-year"></span> <span class="js-company-name">UDEV - StartUP</span>. Todos os direitos reservados.</span>
       <span>Tecnologia aplicada a crescimento previsível.</span>
     </div>
   </footer>
 
   <script src="../assets/js/links.js"></script>
+  <script src="../assets/js/public-site.js"></script>
   <script src="../assets/js/main.js"></script>
 </body>
 </html>

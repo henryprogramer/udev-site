@@ -1,10 +1,9 @@
 # Udev Site Institucional
 
-Site institucional estático oficial da Udev, publicado no GitHub Pages.
+Site institucional estático da **UDEV - StartUP**, com duas áreas:
 
-- Repositório: `udev-site`
-- Stack: HTML + CSS + JavaScript puro (sem backend)
-- Domínio customizado configurado: `unidev.dev.br`
+- **Público**: páginas para usuários/clientes (`/`, `/vendapro/`, `/downloads/`, `/contato/`)
+- **Empresa**: painel de gestão (`/empresa/`) para editar informações, cadastrar produtos e banners
 
 ## Estrutura
 
@@ -12,76 +11,92 @@ Site institucional estático oficial da Udev, publicado no GitHub Pages.
 /
 ├── CNAME
 ├── index.html
-├── assets/
-│   ├── css/
-│   ├── js/
-│   └── img/
+├── empresa/
+│   └── index.html
 ├── vendapro/
 │   └── index.html
 ├── downloads/
 │   └── index.html
 ├── contato/
 │   └── index.html
+├── assets/
+│   ├── css/
+│   │   └── style.css
+│   ├── js/
+│   │   ├── links.js
+│   │   ├── main.js
+│   │   ├── public-site.js
+│   │   └── empresa-admin.js
+│   ├── data/
+│   │   └── site-content.json
+│   └── img/
 └── README.md
 ```
 
-## Como alterar links externos
+## Dados reais padrão
 
-Todos os links externos ficam centralizados em:
+O conteúdo inicial já está configurado com os contatos oficiais:
+
+- Empresa: `udev.oficial@gmail.com`
+- Instagram: `https://www.instagram.com/udev.oficial/`
+- Desenvolvedor/CO-CEO: Pedro Henrique Santos Silva (`pedrohenrique.dev.contato@gmail.com`, `+55 (63) 98441-2348`)
+
+Fonte dos dados públicos:
+
+- `assets/data/site-content.json`
+
+## Área da empresa (`/empresa/`)
+
+No painel interno você pode:
+
+- editar informações institucionais e contatos
+- cadastrar/editar/remover banners
+- cadastrar/editar/remover produtos
+- exportar/importar JSON de conteúdo
+- salvar rascunho local no navegador
+- aplicar pré-visualização local com `?preview=1`
+- conectar Google e sincronizar JSON no Drive
+- enviar imagens para o Drive e usar as URLs públicas
+
+## Google Drive API
+
+Configuração central em:
 
 - `assets/js/links.js`
 
-Edite somente os valores das URLs, mantendo as chaves:
+Campos principais:
 
-- `vendaproDownload`
-- `vendaproOnline`
-- `downloadVendaproDesktop`
-- `downloadVendaproAndroid`
-- `downloadImplementationGuide`
-- `whatsapp`
-- `email`
+- `googleClientId`
+- `googleDriveScope`
+- `driveContentFileName`
+- `publicContentDriveFileId` (opcional)
 
-Exemplo:
+### Fluxo recomendado
 
-```js
-vendaproDownload: "https://drive.google.com/file/d/SEU_ARQUIVO/view"
-```
+1. Acesse `/empresa/`.
+2. Clique em **Conectar Google**.
+3. Cadastre banners/produtos e ajuste os dados institucionais.
+4. Use **Salvar JSON no Drive** para sincronizar o conteúdo.
+5. Use upload de imagem no painel para gerar URLs no formato Drive.
 
 ## Publicação no GitHub Pages
 
-Este projeto está configurado para publicar com:
+Configurado para:
 
-- Branch: `main`
-- Pasta: `/ (root)`
+- branch `main`
+- pasta `/ (root)`
 
-Se precisar reconfigurar:
+## Domínio
 
-1. Acesse `Settings` > `Pages` no GitHub.
-2. Em `Build and deployment`, selecione:
-   - `Source`: `Deploy from a branch`
-   - `Branch`: `main`
-   - `Folder`: `/ (root)`
-3. Salve e aguarde o build.
-
-## Domínio próprio: unidev.dev.br
-
-O domínio está definido no arquivo raiz `CNAME`:
+Arquivo `CNAME`:
 
 ```text
 unidev.dev.br
 ```
 
-No provedor DNS do domínio `dev.br`, o registro recomendado é:
+## Observações de segurança
 
-- Tipo: `CNAME`
-- Host/Nome: `unidev`
-- Valor/Destino: `henryprogramer.github.io`
-
-Após propagação DNS:
-
-1. Verifique `Settings` > `Pages` no GitHub.
-2. Ative `Enforce HTTPS` quando disponível.
-
-## Observação importante
-
-Este repositório **não** armazena arquivos grandes. Downloads devem sempre apontar para links externos (Google Drive, CDN ou outro servidor dedicado).
+- Este projeto é estático e não possui backend.
+- Não coloque `client_secret` no frontend.
+- O arquivo `credentials.json` deve permanecer fora do site publicado.
+- Downloads e artes devem permanecer em armazenamento externo (Google Drive).

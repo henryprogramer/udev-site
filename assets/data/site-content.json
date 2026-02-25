@@ -1,0 +1,109 @@
+{
+  "meta": {
+    "updatedAt": "2026-02-25T00:00:00.000Z",
+    "siteName": "UDEV - StartUP",
+    "shortName": "Udev"
+  },
+  "hero": {
+    "eyebrow": "Startup de software",
+    "headline": "Soluções inteligentes em software e tecnologia",
+    "subheadline": "A Udev cria produtos digitais para acelerar vendas, operação e tomada de decisão com arquitetura escalável e foco em resultado."
+  },
+  "contacts": {
+    "company": {
+      "name": "UDEV - StartUP",
+      "email": "udev.oficial@gmail.com",
+      "instagram": "https://www.instagram.com/udev.oficial/",
+      "whatsapp": "+55 (63) 98441-2348",
+      "whatsappUrl": "https://wa.me/5563984412348?text=Ol%C3%A1%2C%20quero%20conhecer%20as%20solu%C3%A7%C3%B5es%20da%20UDEV%20StartUP."
+    },
+    "developer": {
+      "name": "Pedro Henrique Santos Silva",
+      "role": "Desenvolvedor / CO-CEO",
+      "email": "pedrohenrique.dev.contato@gmail.com",
+      "phone": "+55 (63) 98441-2348"
+    }
+  },
+  "banners": [
+    {
+      "id": "banner-vendapro",
+      "title": "VendaPro SaaS",
+      "description": "Organize a operação comercial com automação, funil completo e indicadores em tempo real.",
+      "tag": "Produto principal",
+      "ctaLabel": "Conhecer o VendaPro",
+      "ctaUrl": "/vendapro/",
+      "imageUrl": ""
+    },
+    {
+      "id": "banner-downloads",
+      "title": "Central de Downloads",
+      "description": "Distribua versões e materiais técnicos com links externos, mantendo o site leve e rápido.",
+      "tag": "Distribuição",
+      "ctaLabel": "Abrir Downloads",
+      "ctaUrl": "/downloads/",
+      "imageUrl": ""
+    }
+  ],
+  "products": [
+    {
+      "id": "vendapro-saas",
+      "name": "VendaPro SaaS",
+      "subtitle": "Plataforma web comercial",
+      "description": "Pipeline de vendas, automação de tarefas e visão executiva com dados centralizados.",
+      "category": "SaaS",
+      "badge": "Online",
+      "imageUrl": "",
+      "onlineUrl": "https://app.vendapro.com.br/",
+      "downloadUrl": "https://drive.google.com/",
+      "visible": true,
+      "featured": true
+    },
+    {
+      "id": "vendapro-desktop",
+      "name": "VendaPro Desktop",
+      "subtitle": "Aplicativo corporativo",
+      "description": "Cliente para operação comercial com foco em produtividade, estabilidade e controle de equipe.",
+      "category": "Desktop",
+      "badge": "Windows",
+      "imageUrl": "",
+      "onlineUrl": "",
+      "downloadUrl": "https://drive.google.com/",
+      "visible": true,
+      "featured": false
+    },
+    {
+      "id": "vendapro-mobile",
+      "name": "VendaPro Mobile",
+      "subtitle": "Aplicativo Android",
+      "description": "Atualize oportunidades, acompanhe clientes em campo e sincronize dados em tempo real.",
+      "category": "Mobile",
+      "badge": "Android",
+      "imageUrl": "",
+      "onlineUrl": "",
+      "downloadUrl": "https://play.google.com/store",
+      "visible": true,
+      "featured": false
+    },
+    {
+      "id": "guia-implementacao",
+      "name": "Guia de Implementação",
+      "subtitle": "Documento técnico",
+      "description": "Checklist de implantação, requisitos e boas práticas para adoção da plataforma.",
+      "category": "Documento",
+      "badge": "PDF",
+      "imageUrl": "",
+      "onlineUrl": "",
+      "downloadUrl": "https://drive.google.com/",
+      "visible": true,
+      "featured": false
+    }
+  ],
+  "testimonials": [
+    {
+      "name": "João Duarte",
+      "role": "Diretor Comercial",
+      "quote": "Com o VendaPro conseguimos centralizar funil, previsão de vendas e acompanhamento do time em uma única plataforma. O ganho de produtividade foi imediato.",
+      "rating": 5
+    }
+  ]
+}

@@ -11,7 +11,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=Sora:wght@600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../assets/css/style.css">
 </head>
-<body>
+<body data-page="contato">
   <header class="site-header">
     <div class="container nav-wrap">
       <a class="brand" href="../"><span class="brand-mark">U</span>dev</a>
@@ -38,18 +38,22 @@
     <section class="section-tight section">
       <div class="container contact-grid" data-reveal>
         <article class="panel contact-card">
-          <h3>Atendimento por WhatsApp</h3>
-          <p>Canal rápido para demandas comerciais e dúvidas iniciais sobre nossas soluções.</p>
-          <div class="contact-row">
-            <a class="btn btn-primary" data-link-key="whatsapp" target="_blank" rel="noopener noreferrer" href="#">Abrir WhatsApp</a>
+          <h3>Contato da empresa</h3>
+          <p class="js-company-name">UDEV - StartUP</p>
+          <div class="contact-meta">
+            <p><strong>E-mail:</strong> <a class="js-company-email-link" href="mailto:udev.oficial@gmail.com"><span class="js-company-email-text">udev.oficial@gmail.com</span></a></p>
+            <p><strong>Instagram:</strong> <a class="js-company-instagram-link" target="_blank" rel="noopener noreferrer" href="https://www.instagram.com/udev.oficial/">@udev.oficial</a></p>
+            <p><strong>WhatsApp:</strong> <a class="js-company-whatsapp-link" target="_blank" rel="noopener noreferrer" href="#"><span class="js-company-whatsapp-text">+55 (63) 98441-2348</span></a></p>
           </div>
         </article>
 
         <article class="panel contact-card">
-          <h3>E-mail institucional</h3>
-          <p>Envie requisitos, escopo de projeto ou detalhes técnicos para análise da equipe.</p>
-          <div class="contact-row">
-            <a class="btn btn-secondary" data-link-key="email" href="mailto:contato@udev.dev.br">Enviar e-mail</a>
+          <h3>Desenvolvedor / CO-CEO</h3>
+          <div class="contact-meta">
+            <p><strong>Nome:</strong> <span class="js-dev-name">Pedro Henrique Santos Silva</span></p>
+            <p><strong>Cargo:</strong> <span class="js-dev-role">Desenvolvedor / CO-CEO</span></p>
+            <p><strong>E-mail:</strong> <a class="js-dev-email-link" href="mailto:pedrohenrique.dev.contato@gmail.com"><span class="js-dev-email-text">pedrohenrique.dev.contato@gmail.com</span></a></p>
+            <p><strong>Telefone:</strong> <span class="js-dev-phone">+55 (63) 98441-2348</span></p>
           </div>
         </article>
 
@@ -57,6 +61,9 @@
           <h3>Mensagem institucional</h3>
           <p>Estamos prontos para apoiar sua evolução digital com soluções robustas, integração eficiente e foco em impacto de negócio.</p>
           <div class="notice-card">Prioridade para empresas em implantação e parceiros de longo prazo.</div>
+          <div class="contact-row">
+            <a class="btn btn-primary js-company-whatsapp-link" target="_blank" rel="noopener noreferrer" href="#">Abrir WhatsApp</a>
+          </div>
         </article>
       </div>
     </section>
@@ -82,20 +89,22 @@
       <section class="footer-col">
         <h3>Contato</h3>
         <div class="footer-links">
-          <a data-link-key="whatsapp" target="_blank" rel="noopener noreferrer" href="#">WhatsApp Comercial</a>
-          <a data-link-key="email" href="mailto:contato@udev.dev.br">contato@udev.dev.br</a>
-          <a href="../downloads/">Downloads Oficiais</a>
+          <a class="js-company-whatsapp-link" target="_blank" rel="noopener noreferrer" href="#">WhatsApp Comercial</a>
+          <a class="js-company-email-link" href="mailto:udev.oficial@gmail.com"><span class="js-company-email-text">udev.oficial@gmail.com</span></a>
+          <a class="js-company-instagram-link" target="_blank" rel="noopener noreferrer" href="https://www.instagram.com/udev.oficial/">Instagram oficial</a>
+          <a href="../empresa/">Área da empresa</a>
         </div>
       </section>
     </div>
 
     <div class="container footer-bottom">
-      <span>© <span class="js-year"></span> Udev. Todos os direitos reservados.</span>
+      <span>© <span class="js-year"></span> <span class="js-company-name">UDEV - StartUP</span>. Todos os direitos reservados.</span>
       <span>Tecnologia aplicada a crescimento previsível.</span>
     </div>
   </footer>
 
   <script src="../assets/js/links.js"></script>
+  <script src="../assets/js/public-site.js"></script>
   <script src="../assets/js/main.js"></script>
 </body>
 </html>

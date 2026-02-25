@@ -11,7 +11,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=Sora:wght@600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../assets/css/style.css">
 </head>
-<body>
+<body data-page="downloads">
   <header class="site-header">
     <div class="container nav-wrap">
       <a class="brand" href="../"><span class="brand-mark">U</span>dev</a>
@@ -30,29 +30,16 @@
       <div class="container" data-reveal>
         <p class="eyebrow">Distribuição oficial</p>
         <h1>Downloads</h1>
-        <p>Os arquivos são hospedados externamente para manter este repositório leve, seguro e com deploy rápido no GitHub Pages.</p>
+        <p>Catálogo de downloads da Udev gerenciado pela empresa, com arquivos hospedados externamente.</p>
         <div class="breadcrumb">Home <span>›</span> Downloads</div>
       </div>
     </section>
 
     <section class="section-tight section">
-      <div class="container download-grid" data-reveal>
+      <div id="js-download-products" class="container download-grid" data-reveal>
         <article class="panel item-card">
-          <h3>VendaPro Desktop</h3>
-          <p>Cliente de operação comercial para equipes que precisam de performance e estabilidade em ambiente corporativo.</p>
-          <a class="btn btn-secondary" data-link-key="downloadVendaproDesktop" target="_blank" rel="noopener noreferrer" href="#">Baixar versão desktop</a>
-        </article>
-
-        <article class="panel item-card">
-          <h3>VendaPro Mobile</h3>
-          <p>Versão Android para atualização de oportunidades, acompanhamento em campo e rotinas de visita.</p>
-          <a class="btn btn-secondary" data-link-key="downloadVendaproAndroid" target="_blank" rel="noopener noreferrer" href="#">Baixar no Android</a>
-        </article>
-
-        <article class="panel item-card">
-          <h3>Guia de Implementação</h3>
-          <p>Material técnico com requisitos, boas práticas de implantação e checklist de adoção da plataforma.</p>
-          <a class="btn btn-secondary" data-link-key="downloadImplementationGuide" target="_blank" rel="noopener noreferrer" href="#">Baixar guia técnico</a>
+          <h3>Carregando catálogo...</h3>
+          <p>Os produtos serão exibidos conforme o cadastro da empresa.</p>
         </article>
       </div>
     </section>
@@ -60,7 +47,7 @@
     <section class="section-compact">
       <div class="container panel contact-card" data-reveal>
         <h3>Observação importante</h3>
-        <p>Não armazenamos binários grandes neste repositório. Todos os downloads apontam para links externos configuráveis em `assets/js/links.js`.</p>
+        <p>Não armazenamos binários grandes neste repositório. Todos os downloads apontam para links externos controlados pela UDEV.</p>
       </div>
     </section>
   </main>
@@ -85,20 +72,22 @@
       <section class="footer-col">
         <h3>Contato</h3>
         <div class="footer-links">
-          <a data-link-key="whatsapp" target="_blank" rel="noopener noreferrer" href="#">WhatsApp Comercial</a>
-          <a data-link-key="email" href="mailto:contato@udev.dev.br">contato@udev.dev.br</a>
-          <a href="../downloads/">Downloads Oficiais</a>
+          <a class="js-company-whatsapp-link" target="_blank" rel="noopener noreferrer" href="#">WhatsApp Comercial</a>
+          <a class="js-company-email-link" href="mailto:udev.oficial@gmail.com"><span class="js-company-email-text">udev.oficial@gmail.com</span></a>
+          <a class="js-company-instagram-link" target="_blank" rel="noopener noreferrer" href="https://www.instagram.com/udev.oficial/">Instagram oficial</a>
+          <a href="../empresa/">Área da empresa</a>
         </div>
       </section>
     </div>
 
     <div class="container footer-bottom">
-      <span>© <span class="js-year"></span> Udev. Todos os direitos reservados.</span>
+      <span>© <span class="js-year"></span> <span class="js-company-name">UDEV - StartUP</span>. Todos os direitos reservados.</span>
       <span>Tecnologia aplicada a crescimento previsível.</span>
     </div>
   </footer>
 
   <script src="../assets/js/links.js"></script>
+  <script src="../assets/js/public-site.js"></script>
   <script src="../assets/js/main.js"></script>
 </body>
 </html>

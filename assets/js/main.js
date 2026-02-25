@@ -58,14 +58,23 @@
   function setupNewsletterForm() {
     const form = document.querySelector(".js-newsletter-form");
     const input = document.querySelector(".js-newsletter-email");
-    const emailLink = externalLinks.email || "mailto:contato@udev.dev.br";
 
-    if (!form || !input || !emailLink.startsWith("mailto:")) {
+    if (!form || !input) {
       return;
     }
 
     form.addEventListener("submit", function (event) {
       event.preventDefault();
+
+      const dynamicEmailLink = document.querySelector(".js-company-email-link");
+      const emailLink =
+        (dynamicEmailLink && dynamicEmailLink.getAttribute("href")) ||
+        externalLinks.email ||
+        "mailto:udev.oficial@gmail.com";
+
+      if (!emailLink.startsWith("mailto:")) {
+        return;
+      }
 
       if (!input.value || !input.checkValidity()) {
         input.reportValidity();
