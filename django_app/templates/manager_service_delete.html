@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}Remover serviço | Udev{% endblock %}
+
+{% block content %}
+<section class="hero" data-animate="fade-up">
+  <h1>Remover serviço</h1>
+  <p class="lead">Esta ação não pode ser desfeita.</p>
+</section>
+
+<section class="section" data-animate="fade-up">
+  <article class="card">
+    <p>Tem certeza que deseja remover <strong>{{ service.title }}</strong>?</p>
+    <form method="post">
+      {% csrf_token %}
+      <div class="actions-row">
+        <button class="btn btn-primary" type="submit">Confirmar remoção</button>
+        <a class="btn btn-secondary" href="{% url 'manager_dashboard' %}">Cancelar</a>
+      </div>
+    </form>
+  </article>
+</section>
+{% endblock %}

@@ -1,0 +1,12 @@
+[project]
+name = "store-backend-scaffold"
+version = "0.1.0"
+description = "Scaffold backend FastAPI para loja"
+requires-python = ">=3.12"
+dependencies = [
+  "fastapi>=0.116.0",
+  "uvicorn>=0.31.0",
+  "sqlalchemy>=2.0.0",
+  "pydantic-settings>=2.5.0",
+  "psycopg[binary]>=3.2.0"
+]

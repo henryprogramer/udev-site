@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Equipe | Udev{% endblock %}
+
+{% block content %}
+<section class="hero" data-animate="fade-up">
+  <div class="hero-brand">
+    <img
+      src="{% static 'assets/logos/logo_empresa.png' %}"
+      alt="Logo Udev"
+      class="hero-brand__logo theme-logo"
+      data-dark-src="{% static 'assets/logos/logo_empresa.png' %}"
+      data-light-src="{% static 'assets/logos/logo_empresa_dark.png' %}"
+    >
+    <span>Udev</span>
+  </div>
+  <h1>{{ section.title }}</h1>
+  <p class="lead">{{ section.subtitle }}</p>
+  <p>{{ section.body }}</p>
+  {% if section.image_url %}
+    <img src="{{ section.image_url }}" alt="Imagem da página Equipe" class="section-image">
+  {% else %}
+    <img src="{% static 'assets/showcase/pexels-team-meeting.jpg' %}" alt="Imagem da página Equipe" class="section-image">
+  {% endif %}
+</section>
+
+<section class="section" data-animate="fade-up">
+  <div class="section-surface section-surface--grid reveal-on-scroll">
+    <div class="grid cards-2">
+      {% for member in members %}
+        <article class="card">
+          {% if member.image %}
+            <a href="{% url 'member_detail' member.slug %}" class="card-link">
+              <img src="{{ member.image.url }}" alt="Foto de {{ member.name }}" class="team-avatar">
+            </a>
+          {% elif member.image_static %}
+            <img src="{% static member.image_static %}" alt="Foto de {{ member.name }}" class="team-avatar">
+          {% else %}
+            <img
+              src="{% static 'assets/logos/logo_empresa.png' %}"
+              alt="Foto de {{ member.name }}"
+              class="team-avatar theme-logo"
+              data-dark-src="{% static 'assets/logos/logo_empresa.png' %}"
+              data-light-src="{% static 'assets/logos/logo_empresa_dark.png' %}"
+            >
+          {% endif %}
+          <h3>{{ member.name }}</h3>
+          <p class="muted">{{ member.role }}</p>
+          {% if member.bio %}
+            <p>{{ member.bio }}</p>
+          {% endif %}
+          {% if member.slug %}
+            <a class="btn btn-secondary" href="{% url 'member_detail' member.slug %}">Ver portfólio</a>
+          {% endif %}
+        </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}

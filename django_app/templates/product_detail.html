@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ product.name }} | Udev{% endblock %}
+
+{% block content %}
+<section class="hero" data-animate="fade-up">
+  <h1>{{ product.name }}</h1>
+  <p class="lead">{{ product.description }}</p>
+  <p class="muted">Preço: R$ {{ product.price }}</p>
+
+  {% if product.cover_image %}
+    <img src="{{ product.cover_image.url }}" alt="Capa de {{ product.name }}" class="section-thumb" style="margin-top:12px;">
+  {% endif %}
+
+  <div class="actions-row" style="margin-top:12px;">
+    {% if can_buy %}
+      {% if not has_purchase %}
+        <form method="post" action="{% url 'purchase_product' product.slug %}">
+          {% csrf_token %}
+          <button class="btn btn-primary" type="submit">Adquirir produto</button>
+        </form>
+      {% else %}
+        <span class="btn btn-secondary" style="cursor:default;">Produto já adquirido</span>
+      {% endif %}
+    {% else %}
+      <a class="btn btn-primary" href="{% url 'login' %}?next={% url 'product_detail' product.slug %}">Entrar para adquirir</a>
+    {% endif %}
+
+    {% if product.video_url %}
+      <a href="{{ product.video_url }}" target="_blank" rel="noopener" class="btn btn-secondary">Abrir vídeo</a>
+    {% endif %}
+  </div>
+</section>
+
+{% if can_download %}
+<section class="section" data-animate="fade-up">
+  <article class="card auth-card">
+    <h2>Download protegido</h2>
+    <p class="muted">Informe a chave de segurança (se cadastrada) para liberar o arquivo.</p>
+    <form method="post" action="{% url 'download_product_file' product.slug %}" class="form-grid">
+      {% csrf_token %}
+      <div class="form-field form-field-full">
+        <label for="security-key">Chave de segurança</label>
+        <input id="security-key" type="text" name="security_key" placeholder="Informe a chave (se houver)">
+      </div>
+      <button type="submit" class="btn btn-primary">Baixar arquivo</button>
+    </form>
+  </article>
+</section>
+{% endif %}
+{% endblock %}

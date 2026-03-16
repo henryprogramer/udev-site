@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Contato | Udev{% endblock %}
+
+{% block content %}
+<section class="hero" data-animate="fade-up">
+  <div class="hero-brand">
+    <img
+      src="{% static 'assets/logos/logo_empresa.png' %}"
+      alt="Logo Udev"
+      class="hero-brand__logo theme-logo"
+      data-dark-src="{% static 'assets/logos/logo_empresa.png' %}"
+      data-light-src="{% static 'assets/logos/logo_empresa_dark.png' %}"
+    >
+    <span>Udev</span>
+  </div>
+  <h1>{{ section.title }}</h1>
+  <p class="lead">{{ section.subtitle }}</p>
+  <p>{{ section.body }}</p>
+  {% if section.image_url %}
+    <img src="{{ section.image_url }}" alt="Imagem da página Contato" class="section-image">
+  {% else %}
+    <img src="{% static 'assets/showcase/automation.jpg' %}" alt="Imagem da página Contato" class="section-image">
+  {% endif %}
+</section>
+
+<section class="section" data-animate="fade-up">
+  <div class="section-surface section-surface--soft reveal-on-scroll">
+    <article class="card">
+      {% if profile.phone %}
+        <p>
+          <strong>WhatsApp:</strong>
+          <a href="{{ profile.phone }}" target="_blank" rel="noopener">{{ profile.phone }}</a>
+        </p>
+      {% endif %}
+      {% if profile.instagram %}
+        <p>
+          <strong>Instagram:</strong>
+          <a href="{{ profile.instagram }}" target="_blank" rel="noopener">{{ profile.instagram }}</a>
+        </p>
+      {% endif %}
+      {% if profile.email %}
+        <p><strong>E-mail:</strong> <a href="mailto:{{ profile.email }}">{{ profile.email }}</a></p>
+      {% endif %}
+      {% if not profile.phone and not profile.instagram and not profile.email %}
+        <p class="muted">WhatsApp, Instagram e e-mail serão exibidos aqui quando configurados na seção Perfil.</p>
+      {% endif %}
+    </article>
+  </div>
+</section>
+{% endblock %}

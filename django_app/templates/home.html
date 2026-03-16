@@ -1,0 +1,224 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Udev | Landing Django{% endblock %}
+
+{% block content %}
+<section class="hero hero--landing" data-animate="fade-up">
+  <div class="hero-copy">
+    <p class="eyebrow">{{ sections.hero.subtitle }}</p>
+    <h1>{{ sections.hero.title }}</h1>
+    <p class="lead">{{ sections.hero.body }}</p>
+    <div class="actions-row">
+      <a class="btn btn-primary" href="{% url 'contact' %}">Fale com a Udev</a>
+      <a class="btn btn-secondary" href="#services">Conheça nossos projetos</a>
+    </div>
+  </div>
+  <aside class="card hero-visual">
+    <img src="{% static 'assets/showcase/service.png' %}" alt="Preview do software Udev" class="hero-image">
+  </aside>
+</section>
+
+<section class="section" id="about" data-animate="fade-up">
+  <div class="section-surface section-surface--soft reveal-on-scroll">
+    <div class="brand-mark">
+      <img
+        src="{% static 'assets/logos/logo_empresa.png' %}"
+        alt="Logo Udev"
+        class="theme-logo"
+        data-dark-src="{% static 'assets/logos/logo_empresa.png' %}"
+        data-light-src="{% static 'assets/logos/logo_empresa_dark.png' %}"
+      >
+      <span>Udev</span>
+    </div>
+    <div class="section-media-grid">
+      <div class="section-media">
+        {% if sections.about.image_url %}
+          <img src="{{ sections.about.image_url }}" alt="Imagem da seção sobre" class="section-image">
+        {% else %}
+          <img
+            src="{% static 'assets/logos/logo_empresa.png' %}"
+            alt="Imagem da seção sobre"
+            class="section-image section-image--logo theme-logo"
+            data-dark-src="{% static 'assets/logos/logo_empresa.png' %}"
+            data-light-src="{% static 'assets/logos/logo_empresa_dark.png' %}"
+          >
+        {% endif %}
+      </div>
+      <div class="section-media__content">
+        <h2>{{ sections.about.title }}</h2>
+        <p class="muted">{{ sections.about.subtitle }}</p>
+        <p>{{ sections.about.body }}</p>
+        {% if details.about %}
+          <ul class="detail-list">
+            {% for item in details.about %}
+              <li>{{ item }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="services" data-animate="fade-up">
+  <div class="section-surface section-surface--grid reveal-on-scroll">
+    <div class="section-head section-head--split">
+      <div class="section-head__title">
+        <h2>{{ sections.services.title }}</h2>
+        <p class="muted">{{ sections.services.subtitle }}</p>
+      </div>
+      <div class="section-head__body">
+        <p>{{ sections.services.body }}</p>
+        {% if details.services %}
+          <ul class="detail-list">
+            {% for item in details.services %}
+              <li>{{ item }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="section-stack">
+      <div class="section-block">
+        <h3 class="section-block__title">Serviços</h3>
+        <div class="grid cards-3">
+          {% for item in service_cards %}
+            <a class="card card-link" href="{% url 'service_detail' item.slug %}">
+              {% if item.image_url %}
+                <img src="{{ item.image_url }}" alt="Preview de {{ item.title }}" class="service-thumb">
+              {% endif %}
+              <h3>{{ item.title }}</h3>
+              <p>{{ item.summary }}</p>
+            </a>
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="section-block">
+        <h3 class="section-block__title">Produtos em destaque</h3>
+        <div class="grid cards-3">
+          {% for product in featured_products %}
+            <article class="card">
+              {% if product.cover_image %}
+                <img src="{{ product.cover_image.url }}" alt="{{ product.name }}" class="section-thumb" style="margin-bottom:10px;">
+              {% endif %}
+              <h3>{{ product.name }}</h3>
+              <p>{{ product.description|default:'Produto da loja Udev'|truncatechars:140 }}</p>
+              <p class="muted">Preço: R$ {{ product.price }}</p>
+              <a class="btn btn-secondary" href="{% url 'product_detail' product.slug %}">Ver detalhe</a>
+            </article>
+          {% empty %}
+            <article class="card">
+              <h3>Sem produtos publicados</h3>
+              <p>Novos produtos e serviços serão publicados em breve.</p>
+            </article>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+    {% if sections.services.image_url %}
+      <img src="{{ sections.services.image_url }}" alt="Imagem da seção serviços" class="section-image">
+    {% endif %}
+  </div>
+</section>
+
+
+<section class="section" data-animate="fade-up">
+  <div class="section-surface section-surface--soft reveal-on-scroll">
+    <h2>{{ sections.team.title }}</h2>
+    <p class="muted">{{ sections.team.subtitle }}</p>
+    <p>{{ sections.team.body }}</p>
+    {% if details.team %}
+      <ul class="detail-list">
+        {% for item in details.team %}
+          <li>{{ item }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+    <div class="grid cards-4">
+      {% for member in members %}
+        <article class="card">
+          {% if member.image %}
+            <a href="{% url 'member_detail' member.slug %}" class="card-link">
+              <img src="{{ member.image.url }}" alt="Foto de {{ member.name }}" class="team-avatar">
+            </a>
+          {% elif member.image_static %}
+            <img src="{% static member.image_static %}" alt="Foto de {{ member.name }}" class="team-avatar">
+          {% else %}
+            <img
+              src="{% static 'assets/logos/logo_empresa.png' %}"
+              alt="Foto de {{ member.name }}"
+              class="team-avatar theme-logo"
+              data-dark-src="{% static 'assets/logos/logo_empresa.png' %}"
+              data-light-src="{% static 'assets/logos/logo_empresa_dark.png' %}"
+            >
+          {% endif %}
+          <h3>{{ member.name }}</h3>
+          <p class="muted">{{ member.role }}</p>
+          {% if member.slug %}
+            <a class="btn btn-secondary" href="{% url 'member_detail' member.slug %}">Ver portfólio</a>
+          {% endif %}
+        </article>
+      {% endfor %}
+    </div>
+    {% if sections.team.image_url %}
+      <img src="{{ sections.team.image_url }}" alt="Imagem da seção equipe" class="section-image">
+    {% endif %}
+  </div>
+</section>
+
+<section class="section" data-animate="fade-up">
+  <div class="section-surface section-surface--grid reveal-on-scroll">
+    <h2>{{ sections.cases.title }}</h2>
+    <p class="muted">{{ sections.cases.subtitle }}</p>
+    <p>{{ sections.cases.body }}</p>
+    {% if details.cases %}
+      <ul class="detail-list">
+        {% for item in details.cases %}
+          <li>{{ item }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+    <div class="grid cards-3">
+      {% for item in case_cards %}
+        <a class="card card-link" href="{% url 'case_detail' item.slug %}">
+          {% if item.image_url %}
+            <img src="{{ item.image_url }}" alt="Case {{ item.title }}" class="service-thumb">
+          {% endif %}
+          <h3>{{ item.title }}</h3>
+          <p>{{ item.summary }}</p>
+        </a>
+      {% endfor %}
+    </div>
+    {% if sections.cases.image_url %}
+      <img src="{{ sections.cases.image_url }}" alt="Imagem da seção cases" class="section-image">
+    {% endif %}
+  </div>
+</section>
+
+<section class="section" data-animate="fade-up">
+  <div class="section-surface section-surface--cta cta-box reveal-on-scroll">
+    <h2>{{ sections.cta.title }}</h2>
+    <p class="muted">{{ sections.cta.subtitle }}</p>
+    <p>{{ sections.cta.body }}</p>
+    {% if details.cta %}
+      <ul class="detail-list">
+        {% for item in details.cta %}
+          <li>{{ item }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+    <div class="actions-row">
+      {% if user.is_authenticated %}
+        <a class="btn btn-primary" href="{% url 'contact' %}">Fale com a Udev</a>
+      {% else %}
+        <a class="btn btn-primary" href="{% url 'login' %}">Criar conta</a>
+      {% endif %}
+      <a class="btn btn-secondary" href="{% url 'services' %}">Ver serviços</a>
+    </div>
+  </div>
+</section>
+{% endblock %}

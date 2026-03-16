@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block title %}Ativação da Gestão | Udev{% endblock %}
+
+{% block content %}
+<section class="hero" data-animate="fade-up">
+  <h1>Ativação do Portal de Gestão</h1>
+  <p class="lead">Solicite o token para o e-mail gestor padrão e avance para definição da senha.</p>
+</section>
+
+<section class="section" data-animate="fade-up">
+  <article class="card auth-card">
+    <form method="post" class="form-grid">
+      {% csrf_token %}
+
+      <div class="form-field form-field-full">
+        <label for="{{ form.email.id_for_label }}">{{ form.email.label }}</label>
+        {{ form.email }}
+        <p class="muted">E-mail autorizado: <strong>{{ manager_email }}</strong></p>
+        {% if form.email.errors %}<p class="error-text">{{ form.email.errors|striptags }}</p>{% endif %}
+      </div>
+
+      {% if form.non_field_errors %}
+        <p class="error-text form-field-full">{{ form.non_field_errors|striptags }}</p>
+      {% endif %}
+
+      <button type="submit" class="btn btn-primary">Enviar token</button>
+      <a href="{% url 'manager_password_setup' %}" class="btn btn-secondary">Já tenho token</a>
+    </form>
+
+    <p class="muted">
+      Em ambiente local, o token é salvo em <code>logs/mail_outbox/</code> quando o backend de e-mail estiver em modo arquivo.
+    </p>
+  </article>
+</section>
+{% endblock %}

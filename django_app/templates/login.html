@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block title %}Login | Udev{% endblock %}
+
+{% block content %}
+<section class="hero" data-animate="fade-up">
+  <h1>Login</h1>
+  <p class="lead">Acesso autenticado para clientes e equipe gestora.</p>
+</section>
+
+<section class="section" data-animate="fade-up">
+  <article class="card auth-card">
+    <form method="post" class="form-grid">
+      {% csrf_token %}
+
+      <div class="form-field form-field-full">
+        <label for="{{ form.username.id_for_label }}">{{ form.username.label }}</label>
+        {{ form.username }}
+        {% if form.username.errors %}<p class="error-text">{{ form.username.errors|striptags }}</p>{% endif %}
+      </div>
+
+      <div class="form-field form-field-full">
+        <label for="{{ form.password.id_for_label }}">{{ form.password.label }}</label>
+        <div class="password-toggle-row">
+          {{ form.password }}
+          <button
+            type="button"
+            class="password-toggle-btn"
+            data-password-toggle="{{ form.password.id_for_label }}"
+            aria-label="Mostrar senha"
+            aria-pressed="false"
+          >
+            <span class="eye-icon" aria-hidden="true"></span>
+            <span class="sr-only">Mostrar senha</span>
+          </button>
+        </div>
+        {% if form.password.errors %}<p class="error-text">{{ form.password.errors|striptags }}</p>{% endif %}
+      </div>
+
+      {% if form.non_field_errors %}
+        <p class="error-text form-field-full">{{ form.non_field_errors|striptags }}</p>
+      {% endif %}
+
+      <button type="submit" class="btn btn-primary">Entrar</button>
+    </form>
+    <p class="muted">Não possui conta? <a href="{% url 'register' %}">Criar cadastro</a></p>
+  </article>
+</section>
+{% endblock %}

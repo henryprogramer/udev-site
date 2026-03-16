@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ case.title }} | Udev{% endblock %}
+
+{% block content %}
+<section class="hero" data-animate="fade-up">
+  <h1>{{ case.title }}</h1>
+  {% if case.summary %}
+    <p class="lead">{{ case.summary }}</p>
+  {% endif %}
+</section>
+
+<section class="section" data-animate="fade-up">
+  <div class="section-surface section-surface--grid reveal-on-scroll">
+    {% if case.image_url %}
+      <img src="{{ case.image_url }}" alt="Imagem de {{ case.title }}" class="section-image">
+    {% endif %}
+    {% if case.result %}
+      <p>{{ case.result|linebreaksbr }}</p>
+    {% else %}
+      <p class="muted">Resultado completo será publicado em breve.</p>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

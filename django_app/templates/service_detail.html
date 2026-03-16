@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ service.title }} | Udev{% endblock %}
+
+{% block content %}
+<section class="hero" data-animate="fade-up">
+  <h1>{{ service.title }}</h1>
+  {% if service.summary %}
+    <p class="lead">{{ service.summary }}</p>
+  {% endif %}
+</section>
+
+<section class="section" data-animate="fade-up">
+  <div class="section-surface section-surface--soft reveal-on-scroll">
+    {% if service.image_url %}
+      <img src="{{ service.image_url }}" alt="Imagem de {{ service.title }}" class="section-image">
+    {% endif %}
+    {% if service.content %}
+      <p>{{ service.content|linebreaksbr }}</p>
+    {% else %}
+      <p class="muted">Conteúdo detalhado será publicado em breve.</p>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

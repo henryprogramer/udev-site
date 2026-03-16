@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Sobre a Udev{% endblock %}
+
+{% block content %}
+<section class="hero" data-animate="fade-up">
+  <div class="hero-brand">
+    <img
+      src="{% static 'assets/logos/logo_empresa.png' %}"
+      alt="Logo Udev"
+      class="hero-brand__logo theme-logo"
+      data-dark-src="{% static 'assets/logos/logo_empresa.png' %}"
+      data-light-src="{% static 'assets/logos/logo_empresa_dark.png' %}"
+    >
+    <span>Udev</span>
+  </div>
+  <h1>{{ section.title }}</h1>
+  <p class="lead">{{ section.subtitle }}</p>
+  <p>{{ section.body }}</p>
+  {% if section.image_url %}
+    <img src="{{ section.image_url }}" alt="Imagem da página Sobre" class="section-image">
+  {% else %}
+    <img
+      src="{% static 'assets/logos/logo_empresa.png' %}"
+      alt="Imagem da página Sobre"
+      class="section-image section-image--logo theme-logo"
+      data-dark-src="{% static 'assets/logos/logo_empresa.png' %}"
+      data-light-src="{% static 'assets/logos/logo_empresa_dark.png' %}"
+    >
+  {% endif %}
+</section>
+
+<section class="section" data-animate="fade-up">
+  <div class="section-surface section-surface--soft reveal-on-scroll">
+    <article class="card">
+      <h2>Quem somos</h2>
+      <p>Somos uma startup de tecnologia que transforma ideias em soluções digitais práticas.</p>
+      <p>Três amigos com uma visão compartilhada decidiram não apenas imaginar o futuro, decidiram construí-lo.</p>
+      <p>O que começou como uma simples conversa se tornou uma empresa focada em desenvolver sistemas que organizam, automatizam e impulsionam negócios.</p>
+      <p>Criamos desde sites institucionais até sistemas de gestão e plataformas SaaS personalizadas para pequenas e médias empresas.</p>
+      <p><strong>Não apenas programamos. Construímos estrutura digital.</strong></p>
+    </article>
+  </div>
+</section>
+
+<section class="section" data-animate="fade-up">
+  <div class="section-surface section-surface--grid reveal-on-scroll">
+    <div class="split-grid">
+      <article class="card">
+        <h2>Nossa missão</h2>
+        <p>Desenvolver soluções digitais eficientes que eliminem tarefas manuais e potencializem processos empresariais.</p>
+      </article>
+      <article class="card">
+        <h2>Nosso propósito</h2>
+        <ul>
+          <li>Tecnologia orientada a resultados.</li>
+          <li>Soluções que funcionam hoje.</li>
+          <li>Crescimento que se sustenta no futuro.</li>
+        </ul>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="section" data-animate="fade-up">
+  <div class="section-surface section-surface--soft reveal-on-scroll">
+    <h2>Nossa história</h2>
+    <ol class="timeline">
+      <li class="card"><strong>29/03/2023</strong> - Fundação da ideia.</li>
+      <li class="card"><strong>30/11/2025</strong> - Estruturação oficial da operação.</li>
+    </ol>
+  </div>
+</section>
+{% endblock %}

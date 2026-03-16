@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}Feedbacks | Udev{% endblock %}
+
+{% block content %}
+<section class="hero" data-animate="fade-up">
+  <h1>Feedbacks de Clientes</h1>
+  <p class="lead">Histórias reais de empresas que evoluíram com a Udev.</p>
+</section>
+
+<section class="section" data-animate="fade-up">
+  <div class="section-surface section-surface--grid reveal-on-scroll">
+    <h2>Depoimentos visuais</h2>
+    <p class="muted">Aqui exibiremos prints e cards de clientes satisfeitos.</p>
+    {% if feedbacks %}
+      <div class="feedback-carousel">
+        {% for feedback in feedbacks %}
+          <article class="feedback-card">
+            <img src="{{ feedback.image.url }}" alt="Feedback {{ forloop.counter }}" class="feedback-card__image">
+            <div class="feedback-card__body">
+              {% if feedback.author %}<strong>{{ feedback.author }}</strong>{% endif %}
+              {% if feedback.role %}<p class="muted">{{ feedback.role }}</p>{% endif %}
+              {% if feedback.quote %}<p>{{ feedback.quote }}</p>{% endif %}
+            </div>
+          </article>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p class="muted">Em breve vamos publicar feedbacks reais de clientes.</p>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ member.name }} | Udev{% endblock %}
+
+{% block content %}
+<section class="hero" data-animate="fade-up">
+  <div class="hero-brand">
+    <img
+      src="{% static 'assets/logos/logo_empresa.png' %}"
+      alt="Logo Udev"
+      class="hero-brand__logo theme-logo"
+      data-dark-src="{% static 'assets/logos/logo_empresa.png' %}"
+      data-light-src="{% static 'assets/logos/logo_empresa_dark.png' %}"
+    >
+    <span>Udev</span>
+  </div>
+  <h1>{{ member.name }}</h1>
+  <p class="lead">{{ member.role }}</p>
+</section>
+
+<section class="section" data-animate="fade-up">
+  <div class="section-surface section-surface--soft reveal-on-scroll">
+    <div class="section-media-grid">
+      <div class="section-media">
+        {% if member.image_url %}
+          <img src="{{ member.image_url }}" alt="Foto de {{ member.name }}" class="section-image">
+        {% elif member.image_static %}
+          <img src="{% static member.image_static %}" alt="Foto de {{ member.name }}" class="section-image">
+        {% else %}
+          <img
+            src="{% static 'assets/logos/logo_empresa.png' %}"
+            alt="Foto de {{ member.name }}"
+            class="section-image section-image--logo theme-logo"
+            data-dark-src="{% static 'assets/logos/logo_empresa.png' %}"
+            data-light-src="{% static 'assets/logos/logo_empresa_dark.png' %}"
+          >
+        {% endif %}
+      </div>
+      <div class="section-media__content">
+        {% if member.bio %}
+          <p class="muted">{{ member.bio }}</p>
+        {% endif %}
+        {% if member.content %}
+          <p>{{ member.content|linebreaksbr }}</p>
+        {% else %}
+          <p class="muted">Conteúdo do portfólio será publicado em breve.</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

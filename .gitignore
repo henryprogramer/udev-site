@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# Node
+node_modules/
+.next/
+
+# Env
+.env
+
+# Runtime
+.run/
+logs/
+
+# Local data
+data/backups/*
+data/uploads/*
+data/products/*
+data/*.db
+data/*.sqlite3
+!data/backups/.gitkeep
+!data/uploads/.gitkeep
+!data/products/.gitkeep

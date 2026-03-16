@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title %}Minha Conta | Udev{% endblock %}
+
+{% block content %}
+<section class="hero" data-animate="fade-up">
+  <h1>Minha Conta</h1>
+  <p class="lead">Área exclusiva para clientes.</p>
+</section>
+
+<section class="section split-grid" data-animate="fade-up">
+  <article class="card">
+    <p><strong>Nome:</strong> {{ user.first_name|default:user.username }}</p>
+    <p><strong>E-mail:</strong> {{ user.email|default:user.username }}</p>
+    <div class="actions-row">
+      <a class="btn btn-secondary" href="{% url 'services' %}">Ver serviços</a>
+    </div>
+  </article>
+
+  <article class="card">
+    <h2>Produtos adquiridos</h2>
+    <div class="manager-list">
+      {% for purchase in purchases %}
+        <article class="manager-item">
+          <div>
+            <strong>{{ purchase.product.name }}</strong>
+            <p class="muted">Aquisição em {{ purchase.created_at|date:"d/m/Y H:i" }}</p>
+          </div>
+          <a class="btn btn-secondary" href="{% url 'product_detail' purchase.product.slug %}">Abrir</a>
+        </article>
+      {% empty %}
+        <p class="muted">Nenhum produto adquirido ainda.</p>
+      {% endfor %}
+    </div>
+  </article>
+</section>
+{% endblock %}

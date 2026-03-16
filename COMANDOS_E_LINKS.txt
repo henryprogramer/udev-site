@@ -1,0 +1,7 @@
+bash scripts/stop_dev.sh
+bash scripts/run_dev.sh
+# (Compatibilidade) bash scripts/run_online.sh
+# Se aparecer erro de pip/ensurepip: instale o pacote python3-venv da sua distro.
+
+Portal de gestão (acesso direto por URL):
+http://localhost:8000/gestao/

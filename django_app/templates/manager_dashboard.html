@@ -1,0 +1,349 @@
+{% extends 'base.html' %}
+
+{% block title %}Portal Gestão | Udev{% endblock %}
+
+{% block content %}
+<section class="hero" data-animate="fade-up">
+  <h1>Portal de Gestão</h1>
+  <p class="lead">Área isolada da equipe gestora para publicar produtos e editar todas as seções do site.</p>
+  <p class="muted">E-mail gestor padrão: {{ manager_email }}</p>
+</section>
+
+<div class="manager-layout">
+  <nav class="manager-sidebar">
+    <h3>Menu</h3>
+    <a href="#manager-products">Produtos</a>
+    <a href="#manager-sections">Seções</a>
+    <a href="#manager-services">Serviços</a>
+    <a href="#manager-cases">Cases</a>
+    <a href="#manager-users">Usuários</a>
+    <a href="#manager-requests">Solicitações</a>
+    <a href="#manager-members">Membros</a>
+    <a href="#manager-feedbacks">Feedbacks</a>
+  </nav>
+
+  <div class="manager-content">
+<section class="section split-grid" data-animate="fade-up" id="manager-products">
+  <article class="card">
+    <h2>Novo produto</h2>
+    <form method="post" enctype="multipart/form-data" class="form-grid">
+      {% csrf_token %}
+      <input type="hidden" name="action" value="create_product">
+      {% for field in product_form %}
+        <div class="form-field {% if field.name == 'description' %}form-field-full{% endif %}">
+          <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+          {{ field }}
+          {% if field.help_text %}<p class="muted">{{ field.help_text|safe }}</p>{% endif %}
+          {% if field.errors %}<p class="error-text">{{ field.errors|striptags }}</p>{% endif %}
+        </div>
+      {% endfor %}
+      <button class="btn btn-primary" type="submit">Publicar produto</button>
+    </form>
+  </article>
+
+  <article class="card">
+    <h2>Conteúdo das seções</h2>
+    <p class="muted">Para exibir WhatsApp, Instagram e e-mail na página de contato, selecione a seção <strong>Perfil (Contato e Redes)</strong>.</p>
+    <form method="post" enctype="multipart/form-data" class="form-grid">
+      {% csrf_token %}
+      <input type="hidden" name="action" value="save_section">
+      {% for field in section_form %}
+        <div class="form-field {% if field.name == 'body' %}form-field-full{% endif %}">
+          <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+          {{ field }}
+          {% if field.help_text %}<p class="muted">{{ field.help_text|safe }}</p>{% endif %}
+          {% if field.errors %}<p class="error-text">{{ field.errors|striptags }}</p>{% endif %}
+        </div>
+      {% endfor %}
+      <button class="btn btn-primary" type="submit">Salvar seção</button>
+    </form>
+    <p class="muted" style="margin-top:10px;">Edite e publique cada seção antes de colocar no ar.</p>
+  </article>
+</section>
+
+<section class="section split-grid" data-animate="fade-up" id="manager-sections">
+  <article class="card">
+    <h2>Produtos cadastrados</h2>
+    <div class="manager-list scroll-panel">
+      {% for product in products %}
+        <article class="manager-item">
+          <div>
+            <strong>{{ product.name }}</strong>
+            <p class="muted">R$ {{ product.price }} | {% if product.is_active %}Publicado{% else %}Rascunho{% endif %}</p>
+          </div>
+          <div class="actions-row">
+            <a class="btn btn-secondary" href="{% url 'product_detail' product.slug %}">Visualizar</a>
+            <a class="btn btn-secondary" href="{% url 'manager_product_edit' product.id %}">Editar</a>
+            <a class="btn btn-secondary" href="{% url 'manager_product_delete' product.id %}">Remover</a>
+          </div>
+        </article>
+      {% empty %}
+        <p class="muted">Nenhum produto cadastrado.</p>
+      {% endfor %}
+    </div>
+  </article>
+
+  <article class="card">
+    <h2>Seções configuradas</h2>
+    <div class="manager-list">
+      {% for item in sections %}
+        <article class="manager-box">
+          <strong>{{ item.get_section_key_display }}</strong>
+          <p class="muted">Status: {% if item.is_published %}Publicado{% else %}Rascunho{% endif %}</p>
+          <p>{{ item.title|default:'Sem título definido.' }}</p>
+          {% if item.section_key == 'profile' %}
+            {% if item.phone %}<p class="muted">WhatsApp: {{ item.phone }}</p>{% endif %}
+            {% if item.email %}<p class="muted">E-mail: {{ item.email }}</p>{% endif %}
+            {% if item.instagram %}<p class="muted">Instagram: {{ item.instagram }}</p>{% endif %}
+          {% endif %}
+          {% if item.image %}
+            <img src="{{ item.image.url }}" alt="Imagem da seção {{ item.get_section_key_display }}" class="section-thumb" style="margin-top:8px;">
+          {% endif %}
+        </article>
+      {% empty %}
+        <p class="muted">Nenhuma seção personalizada ainda.</p>
+      {% endfor %}
+    </div>
+  </article>
+</section>
+
+<section class="section split-grid" data-animate="fade-up" id="manager-services">
+  <article class="card">
+    <h2>Serviços da empresa</h2>
+    <p class="muted">Conteúdos exibidos na página de serviços e na home.</p>
+    <form method="post" enctype="multipart/form-data" class="form-grid">
+      {% csrf_token %}
+      <input type="hidden" name="action" value="create_service">
+      {% for field in service_form %}
+        <div class="form-field {% if field.name == 'content' %}form-field-full{% endif %}">
+          <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+          {{ field }}
+          {% if field.help_text %}<p class="muted">{{ field.help_text|safe }}</p>{% endif %}
+          {% if field.errors %}<p class="error-text">{{ field.errors|striptags }}</p>{% endif %}
+        </div>
+      {% endfor %}
+      <button class="btn btn-primary" type="submit">Adicionar serviço</button>
+    </form>
+  </article>
+
+  <article class="card">
+    <h2>Serviços cadastrados</h2>
+    <div class="manager-list scroll-panel">
+      {% for service in services %}
+        <article class="manager-item">
+          <div>
+            <strong>{{ service.title }}</strong>
+            <p class="muted">Status: {% if service.is_published %}Publicado{% else %}Rascunho{% endif %}</p>
+          </div>
+          <div class="actions-row">
+            <a class="btn btn-secondary" href="{% url 'service_detail' service.slug %}">Visualizar</a>
+            <a class="btn btn-secondary" href="{% url 'manager_service_edit' service.id %}">Editar</a>
+            <a class="btn btn-secondary" href="{% url 'manager_service_delete' service.id %}">Remover</a>
+          </div>
+        </article>
+      {% empty %}
+        <p class="muted">Nenhum serviço cadastrado.</p>
+      {% endfor %}
+    </div>
+  </article>
+</section>
+
+<section class="section split-grid" data-animate="fade-up" id="manager-cases">
+  <article class="card">
+    <h2>Cases e projetos</h2>
+    <p class="muted">Exibidos na página de cases e na home.</p>
+    <form method="post" enctype="multipart/form-data" class="form-grid">
+      {% csrf_token %}
+      <input type="hidden" name="action" value="create_case">
+      {% for field in case_form %}
+        <div class="form-field {% if field.name == 'result' %}form-field-full{% endif %}">
+          <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+          {{ field }}
+          {% if field.help_text %}<p class="muted">{{ field.help_text|safe }}</p>{% endif %}
+          {% if field.errors %}<p class="error-text">{{ field.errors|striptags }}</p>{% endif %}
+        </div>
+      {% endfor %}
+      <button class="btn btn-primary" type="submit">Adicionar case</button>
+    </form>
+  </article>
+
+  <article class="card">
+    <h2>Cases cadastrados</h2>
+    <div class="manager-list scroll-panel">
+      {% for case in cases %}
+        <article class="manager-item">
+          <div>
+            <strong>{{ case.title }}</strong>
+            <p class="muted">Status: {% if case.is_published %}Publicado{% else %}Rascunho{% endif %}</p>
+          </div>
+          <div class="actions-row">
+            <a class="btn btn-secondary" href="{% url 'case_detail' case.slug %}">Visualizar</a>
+            <a class="btn btn-secondary" href="{% url 'manager_case_edit' case.id %}">Editar</a>
+            <a class="btn btn-secondary" href="{% url 'manager_case_delete' case.id %}">Remover</a>
+          </div>
+        </article>
+      {% empty %}
+        <p class="muted">Nenhum case cadastrado.</p>
+      {% endfor %}
+    </div>
+  </article>
+</section>
+
+<section class="section split-grid" data-animate="fade-up" id="manager-users">
+  <article class="card">
+    <h2>Novos acessos</h2>
+    <p class="muted">Crie usuários administradores ou clientes para o portal.</p>
+    <form method="post" class="form-grid">
+      {% csrf_token %}
+      <input type="hidden" name="action" value="create_user">
+      {% for field in user_form %}
+        <div class="form-field {% if field.name == 'password1' or field.name == 'password2' %}form-field-full{% endif %}">
+          <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+          {{ field }}
+          {% if field.help_text %}<p class="muted">{{ field.help_text|safe }}</p>{% endif %}
+          {% if field.errors %}<p class="error-text">{{ field.errors|striptags }}</p>{% endif %}
+        </div>
+      {% endfor %}
+      <button class="btn btn-primary" type="submit">Criar usuário</button>
+    </form>
+  </article>
+
+  <article class="card">
+    <h2>Usuários cadastrados</h2>
+    <div class="manager-list scroll-panel">
+      {% for user_item in users %}
+        <article class="manager-item">
+          <div>
+            <strong>{{ user_item.first_name|default:user_item.username }}</strong>
+            <p class="muted">{{ user_item.email|default:user_item.username }}</p>
+            <p class="muted">Perfil: {% if user_item.is_staff %}Administrador{% else %}Cliente{% endif %} | Status: {% if user_item.is_active %}Ativo{% else %}Inativo{% endif %}</p>
+          </div>
+          <div class="actions-row">
+            <form method="post" action="{% url 'manager_user_toggle_staff' user_item.id %}">
+              {% csrf_token %}
+              <button class="btn btn-secondary" type="submit">
+                {% if user_item.is_staff %}Tornar cliente{% else %}Tornar admin{% endif %}
+              </button>
+            </form>
+            <form method="post" action="{% url 'manager_user_toggle_active' user_item.id %}">
+              {% csrf_token %}
+              <button class="btn btn-secondary" type="submit">
+                {% if user_item.is_active %}Desativar{% else %}Ativar{% endif %}
+              </button>
+            </form>
+          </div>
+        </article>
+      {% empty %}
+        <p class="muted">Nenhum usuário cadastrado.</p>
+      {% endfor %}
+    </div>
+  </article>
+</section>
+
+<section class="section" data-animate="fade-up" id="manager-requests">
+  <article class="card">
+    <h2>Solicitações de serviço</h2>
+    <div class="manager-list scroll-panel">
+      {% for request_item in service_requests %}
+        <article class="manager-item">
+          <div>
+            <strong>{{ request_item.name }}</strong>
+            <p class="muted">{{ request_item.email }}{% if request_item.phone %} | {{ request_item.phone }}{% endif %}</p>
+            <p class="muted">Tipo: {{ request_item.get_service_type_display }} | {{ request_item.created_at|date:"d/m/Y H:i" }}</p>
+            <p>{{ request_item.message|truncatechars:140 }}</p>
+          </div>
+          <div class="actions-row">
+            <span class="muted">Status: {{ request_item.get_status_display }}</span>
+          </div>
+        </article>
+      {% empty %}
+        <p class="muted">Nenhuma solicitação recebida ainda.</p>
+      {% endfor %}
+    </div>
+  </article>
+</section>
+
+<section class="section split-grid" data-animate="fade-up" id="manager-members">
+  <article class="card">
+    <h2>Membros da equipe</h2>
+    <p class="muted">Cadastre o portfólio de cada membro para a página pública.</p>
+    <form method="post" enctype="multipart/form-data" class="form-grid">
+      {% csrf_token %}
+      <input type="hidden" name="action" value="create_member">
+      {% for field in member_form %}
+        <div class="form-field {% if field.name == 'content' %}form-field-full{% endif %}">
+          <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+          {{ field }}
+          {% if field.help_text %}<p class="muted">{{ field.help_text|safe }}</p>{% endif %}
+          {% if field.errors %}<p class="error-text">{{ field.errors|striptags }}</p>{% endif %}
+        </div>
+      {% endfor %}
+      <button class="btn btn-primary" type="submit">Adicionar membro</button>
+    </form>
+  </article>
+
+  <article class="card">
+    <h2>Equipe cadastrada</h2>
+    <div class="manager-list scroll-panel">
+      {% for member in members %}
+        <article class="manager-item">
+          <div>
+            <strong>{{ member.name }}</strong>
+            <p class="muted">{{ member.role }}</p>
+            <p class="muted">Status: {% if member.is_published %}Publicado{% else %}Rascunho{% endif %}</p>
+          </div>
+          <div class="actions-row">
+            <a class="btn btn-secondary" href="{% url 'member_detail' member.slug %}">Visualizar</a>
+            <a class="btn btn-secondary" href="{% url 'manager_member_edit' member.id %}">Editar</a>
+            <a class="btn btn-secondary" href="{% url 'manager_member_delete' member.id %}">Remover</a>
+          </div>
+        </article>
+      {% empty %}
+        <p class="muted">Nenhum membro cadastrado.</p>
+      {% endfor %}
+    </div>
+  </article>
+</section>
+
+<section class="section split-grid" data-animate="fade-up" id="manager-feedbacks">
+  <article class="card">
+    <h2>Feedbacks de clientes</h2>
+    <p class="muted">Suba imagens reais no formato recomendado para preencher o carrossel.</p>
+    <form method="post" enctype="multipart/form-data" class="form-grid">
+      {% csrf_token %}
+      <input type="hidden" name="action" value="create_feedback">
+      {% for field in feedback_form %}
+        <div class="form-field {% if field.name == 'quote' %}form-field-full{% endif %}">
+          <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+          {{ field }}
+          {% if field.help_text %}<p class="muted">{{ field.help_text|safe }}</p>{% endif %}
+          {% if field.errors %}<p class="error-text">{{ field.errors|striptags }}</p>{% endif %}
+        </div>
+      {% endfor %}
+      <button class="btn btn-primary" type="submit">Adicionar feedback</button>
+    </form>
+  </article>
+
+  <article class="card">
+    <h2>Carrossel (prévia)</h2>
+    {% if feedbacks %}
+      <div class="feedback-carousel">
+        {% for feedback in feedbacks %}
+          <article class="feedback-card">
+            <img src="{{ feedback.image.url }}" alt="Feedback {{ forloop.counter }}" class="feedback-card__image">
+            <div class="feedback-card__body">
+              {% if feedback.author %}<strong>{{ feedback.author }}</strong>{% endif %}
+              {% if feedback.role %}<p class="muted">{{ feedback.role }}</p>{% endif %}
+              {% if feedback.quote %}<p>{{ feedback.quote|truncatechars:100 }}</p>{% endif %}
+            </div>
+          </article>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p class="muted">Nenhum feedback publicado ainda.</p>
+    {% endif %}
+  </article>
+</section>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Serviços | Udev{% endblock %}
+
+{% block content %}
+<section class="hero" data-animate="fade-up">
+  <div class="hero-brand">
+    <img
+      src="{% static 'assets/logos/logo_empresa.png' %}"
+      alt="Logo Udev"
+      class="hero-brand__logo theme-logo"
+      data-dark-src="{% static 'assets/logos/logo_empresa.png' %}"
+      data-light-src="{% static 'assets/logos/logo_empresa_dark.png' %}"
+    >
+    <span>Udev</span>
+  </div>
+  <h1>{{ section.title }}</h1>
+  <p class="lead">{{ section.subtitle }}</p>
+  <p>{{ section.body }}</p>
+  {% if section.image_url %}
+    <img src="{{ section.image_url }}" alt="Imagem da página Serviços" class="section-image">
+  {% else %}
+    <img src="{% static 'assets/showcase/pexels-code-closeup.jpg' %}" alt="Imagem da página Serviços" class="section-image">
+  {% endif %}
+</section>
+
+<section class="section" data-animate="fade-up">
+  <div class="section-surface section-surface--grid reveal-on-scroll">
+    <h2>Serviços</h2>
+    <p class="muted">Explore os serviços principais da Udev.</p>
+    <div class="grid cards-3">
+      {% for item in service_cards %}
+        <a class="card card-link" href="{% url 'service_detail' item.slug %}">
+          {% if item.image_url %}
+            <img src="{{ item.image_url }}" alt="Preview de {{ item.title }}" class="service-thumb">
+          {% endif %}
+          <h3>{{ item.title }}</h3>
+          <p>{{ item.summary }}</p>
+        </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="section" data-animate="fade-up">
+  <div class="section-surface section-surface--grid reveal-on-scroll">
+    <h2>Produtos</h2>
+    <p class="muted">Produtos digitais disponíveis no catálogo.</p>
+    <div class="grid cards-3">
+      {% for product in products %}
+        <article class="card">
+          {% if product.cover_image %}
+            <img src="{{ product.cover_image.url }}" alt="{{ product.name }}" class="section-thumb" style="margin-bottom:10px;">
+          {% endif %}
+          <h3>{{ product.name }}</h3>
+          <p>{{ product.description|truncatechars:140 }}</p>
+          <p class="muted">R$ {{ product.price }}</p>
+          <a class="btn btn-secondary" href="{% url 'product_detail' product.slug %}">Saiba mais</a>
+        </article>
+      {% empty %}
+        <article class="card">
+          <h3>Sem produtos ativos</h3>
+          <p>Novos produtos e serviços serão publicados em breve.</p>
+        </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="section" data-animate="fade-up">
+  <div class="section-surface section-surface--soft reveal-on-scroll">
+    <div class="split-grid">
+      <article>
+        <h2>Solicitar serviço</h2>
+        <p class="muted">Explique o desafio e retornamos com diagnóstico técnico e proposta.</p>
+        <p>Atuamos com desenvolvimento de sites, aplicativos, sistemas web e automações sob medida.</p>
+        <ul class="service-tags">
+          {% for value, label in service_types %}
+            <li>{{ label }}</li>
+          {% endfor %}
+        </ul>
+      </article>
+      <form method="post" class="form-grid service-form">
+        {% csrf_token %}
+        {% for field in service_request_form %}
+          <div class="form-field {% if field.name == 'message' %}form-field-full{% endif %}">
+            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+            {{ field }}
+            {% if field.help_text %}<p class="muted">{{ field.help_text|safe }}</p>{% endif %}
+            {% if field.errors %}<p class="error-text">{{ field.errors|striptags }}</p>{% endif %}
+          </div>
+        {% endfor %}
+        <button class="btn btn-primary" type="submit">Enviar solicitação</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<section class="section" data-animate="fade-up">
+  <div class="section-surface section-surface--grid reveal-on-scroll">
+    <h2>{{ pricing_section.title }}</h2>
+    <p class="muted">{{ pricing_section.subtitle }}</p>
+    <p>{{ pricing_section.body }}</p>
+  </div>
+</section>
+{% endblock %}
