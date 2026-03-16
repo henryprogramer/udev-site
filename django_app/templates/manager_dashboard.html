@@ -6,7 +6,6 @@
 <section class="hero" data-animate="fade-up">
   <h1>Portal de Gestão</h1>
   <p class="lead">Área isolada da equipe gestora para publicar produtos e editar todas as seções do site.</p>
-  <p class="muted">E-mail gestor padrão: {{ manager_email }}</p>
 </section>
 
 <div class="manager-layout">
@@ -23,6 +22,15 @@
   </nav>
 
   <div class="manager-content">
+<section class="section" data-animate="fade-up" id="manager-access">
+  <article class="card">
+    <h2>Credenciais de gestão</h2>
+    <p class="muted">E-mail autorizado: {{ manager_email }}</p>
+    <p><a href="{% url 'manager_token_request' %}">Solicitar token de acesso</a></p>
+    <p class="muted">Token local (modo arquivo): logs/mail_outbox/</p>
+  </article>
+</section>
+
 <section class="section split-grid" data-animate="fade-up" id="manager-products">
   <article class="card">
     <h2>Novo produto</h2>
