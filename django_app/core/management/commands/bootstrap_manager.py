@@ -9,11 +9,12 @@ from django.core.management.base import BaseCommand
 
 
 class Command(BaseCommand):
-    help = "Cria ou atualiza o usuário gestor padrão (sem senha inicial)."
+    help = "Cria ou atualiza o usuário gestor padrão (com senha inicial)."
 
     def handle(self, *args, **options):
         email = os.getenv("MANAGER_REGISTRATION_EMAIL", "udev.oficial@gmail.com").strip().lower()
         full_name = os.getenv("MANAGER_REGISTRATION_NAME", "Equipe Gestora Udev").strip()
+        default_password = os.getenv("MANAGER_DEFAULT_PASSWORD", "Ud9088152022/")
 
         if not email:
             self.stdout.write(
@@ -46,10 +47,10 @@ class Command(BaseCommand):
             user.is_active = True
             changed = True
 
-        # Em criação inicial, a conta nasce sem senha e deve passar pelo fluxo de token.
-        # Após ativada, a senha definida pelo gestor deve ser preservada.
-        if created:
-            user.set_unusable_password()
+        # Em criação inicial (ou se a conta ainda estiver sem senha),
+        # garante acesso com a senha padrão para o primeiro login.
+        if created or not user.has_usable_password():
+            user.set_password(default_password)
             changed = True
 
         if created or changed:
