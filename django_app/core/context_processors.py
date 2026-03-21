@@ -3,8 +3,17 @@
 from __future__ import annotations
 
 from django.conf import settings
+from django.urls import reverse
 
 from .models import ClientProfile, SectionContent
+from .legal import (
+    LEGAL_DOCS_INDEX,
+    LEGAL_FOOTER_GROUPS,
+    LEGAL_DOCUMENTS,
+    LEGAL_NOTICE_POINTS,
+    LEGAL_NOTICE_SHORT,
+    LEGAL_TRUST_BLOCK,
+)
 
 
 def footer_profile(_request):
@@ -23,6 +32,56 @@ def footer_profile(_request):
             "email": email,
             "instagram": instagram,
         }
+    }
+
+
+def legal_resources(_request):
+    """Links e avisos institucionais usados no footer e nas paginas legais."""
+    legal_footer_docs_groups = [
+        {
+            "title": group["title"],
+            "documents": [
+                {
+                    "title": document["title"],
+                    "url": reverse(document["url_name"]),
+                }
+                for document in group["documents"]
+            ],
+        }
+        for group in LEGAL_FOOTER_GROUPS[:2]
+    ]
+
+    legal_footer_institutional_group = {
+        "title": LEGAL_FOOTER_GROUPS[2]["title"],
+        "documents": [
+            {
+                "title": document["title"],
+                "url": reverse(document["url_name"]),
+            }
+            for document in LEGAL_FOOTER_GROUPS[2]["documents"]
+        ],
+    }
+
+    return {
+        "legal_docs_index": {
+            "title": LEGAL_DOCS_INDEX["title"],
+            "summary": LEGAL_DOCS_INDEX["summary"],
+            "url": reverse(LEGAL_DOCS_INDEX["url_name"]),
+        },
+        "legal_documents": [
+            {
+                "title": item["title"],
+                "summary": item["summary"],
+                "url": reverse(item["url_name"]),
+            }
+            for item in LEGAL_DOCUMENTS
+        ],
+        "legal_footer_groups": legal_footer_docs_groups + [legal_footer_institutional_group],
+        "legal_footer_docs_groups": legal_footer_docs_groups,
+        "legal_footer_institutional_group": legal_footer_institutional_group,
+        "legal_trust_block": LEGAL_TRUST_BLOCK,
+        "legal_notice_points": LEGAL_NOTICE_POINTS,
+        "legal_notice_short": LEGAL_NOTICE_SHORT,
     }
 
 

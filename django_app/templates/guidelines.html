@@ -1,22 +1,45 @@
-{% extends 'base.html' %}
+{% extends 'legal_page.html' %}
 
-{% block title %}Diretrizes | UDEV | StartUP{% endblock %}
+{% block title %}Diretrizes da Marca | UDEV | StartUP{% endblock %}
+{% block legal_title %}Diretrizes da Marca{% endblock %}
+{% block legal_lead %}As diretrizes abaixo orientam a aplicação da marca UDEV em materiais digitais e institucionais.{% endblock %}
+{% block legal_intro %}A aplicação consistente da identidade visual ajuda a preservar confiança, clareza e reconhecimento da marca.{% endblock %}
 
-{% block content %}
-<section class="hero" data-animate="fade-up">
-  <h1>Diretrizes da Marca</h1>
-  <p class="lead">Orientações para uso correto da identidade da Udev.</p>
-</section>
+{% block legal_body %}
+  <article class="legal-section">
+    <h2>1. Identidade</h2>
+    <p>A marca UDEV representa tecnologia prática, eficiência mensurável e crescimento sustentável. Sua comunicação deve preservar esse posicionamento com clareza, consistência e sobriedade.</p>
+  </article>
 
-<section class="section" data-animate="fade-up">
-  <div class="section-surface section-surface--soft reveal-on-scroll">
-    <h2>Manual inicial</h2>
-    <p class="muted">Estamos preparando o material completo de identidade visual.</p>
+  <article class="legal-section">
+    <h2>2. Uso do nome e logotipo</h2>
+    <p>O nome, o logotipo e os elementos visuais da UDEV devem ser aplicados de forma consistente, sem distorção, cortes indevidos, mudanças de proporção ou alterações que prejudiquem a legibilidade.</p>
+  </article>
+
+  <article class="legal-section">
+    <h2>3. Tom de comunicação</h2>
+    <p>A comunicação institucional deve ser:</p>
     <ul class="detail-list">
-      <li>Uso correto da logo e proporções.</li>
-      <li>Paleta de cores e tipografia oficial.</li>
-      <li>Aplicações em digital e impresso.</li>
+      <li>objetiva;</li>
+      <li>profissional;</li>
+      <li>confiável;</li>
+      <li>clara;</li>
+      <li>coerente com a proposta tecnológica da marca.</li>
     </ul>
-  </div>
-</section>
+  </article>
+
+  <article class="legal-section">
+    <h2>4. Cores e aplicações</h2>
+    <p>As cores da marca devem ser usadas de forma consistente em interfaces, botões, títulos e materiais promocionais. Alterações fora do padrão devem ser evitadas para não comprometer a identidade visual.</p>
+  </article>
+
+  <article class="legal-section">
+    <h2>5. Materiais derivados</h2>
+    <p>Peças de divulgação, apresentações, landing pages e outros materiais vinculados à UDEV devem respeitar a identidade original e não criar interpretações que possam confundir o usuário.</p>
+  </article>
+
+  <article class="legal-section">
+    <h2>6. Aprovação</h2>
+    <p>Em caso de uso externo da marca, recomenda-se validação prévia para manter a integridade visual e institucional.</p>
+  </article>
 {% endblock %}

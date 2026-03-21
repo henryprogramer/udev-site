@@ -1,6 +1,6 @@
 # Udev - Stack Python + Django
 
-Projeto refatorado para stack única com Django (sem túnel externo).
+Projeto principal em Django, com frontend Next.js preparado para exportação estática e preview no GitHub Pages.
 
 ## O que está implementado
 
@@ -19,6 +19,7 @@ Projeto refatorado para stack única com Django (sem túnel externo).
 - Gestão de produtos com arquivo protegido e chave de segurança
 - Edição de seções do site com publicação controlada
 - Django admin (`/admin/`) disponível para equipe autorizada
+- Frontend `frontend/` com build estático preparado para GitHub Pages
 
 ## Rodar local
 
@@ -52,3 +53,11 @@ bash scripts/db_init.sh
 ## Observação sobre run_online
 
 `bash scripts/run_online.sh` foi mantido apenas por compatibilidade e agora chama execução local sem túnel externo.
+
+## Preview estático
+
+O frontend em `frontend/` pode ser exportado como site estático e publicado no GitHub Pages.
+
+- O domínio configurado para o preview é `udevstartup.com.br`
+- O workflow de publicação fica em `.github/workflows/deploy-pages.yml`
+- GitHub Pages não hospeda o backend Django; ele serve apenas o frontend estático

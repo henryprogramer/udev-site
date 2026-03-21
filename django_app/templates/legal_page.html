@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<section class="hero" data-animate="fade-up">
+  <div class="hero-brand">
+    <img
+      src="{% static 'assets/logos/logo_empresa.png' %}"
+      alt="Logo Udev"
+      class="hero-brand__logo theme-logo"
+      data-dark-src="{% static 'assets/logos/logo_empresa.png' %}"
+      data-light-src="{% static 'assets/logos/logo_empresa_dark.png' %}"
+    >
+    <span>Udev</span>
+  </div>
+  <h1>{% block legal_title %}{% endblock %}</h1>
+  <p class="lead">{% block legal_lead %}{% endblock %}</p>
+  <p>{% block legal_intro %}{% endblock %}</p>
+</section>
+
+<section class="section" data-animate="fade-up">
+  <div class="section-surface section-surface--soft reveal-on-scroll legal-page">
+    <div class="legal-page__body">
+      {% block legal_body %}{% endblock %}
+    </div>
+    <div class="legal-updated">
+      <span>Última atualização</span>
+      <strong>{{ last_updated|date:"d/m/Y" }}</strong>
+    </div>
+  </div>
+</section>
+
+<section class="section" data-animate="fade-up">
+  <div class="section-surface section-surface--grid reveal-on-scroll">
+    <h2>Avisos essenciais</h2>
+    <ul class="detail-list">
+      {% for point in legal_notice_points %}
+        <li>{{ point }}</li>
+      {% endfor %}
+    </ul>
+  </div>
+</section>
+{% endblock %}

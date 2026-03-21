@@ -11,6 +11,7 @@
 <div class="manager-layout">
   <nav class="manager-sidebar">
     <h3>Menu</h3>
+    <a href="#manager-kpis">Dashboard</a>
     <a href="#manager-products">Produtos</a>
     <a href="#manager-sections">Seções</a>
     <a href="#manager-services">Serviços</a>
@@ -29,6 +30,86 @@
     <p><a href="{% url 'manager_token_request' %}">Solicitar token de acesso</a></p>
     <p class="muted">Token local (modo arquivo): logs/mail_outbox/</p>
   </article>
+</section>
+
+<section class="section" data-animate="fade-up" id="manager-kpis">
+  <h2>Dashboard</h2>
+  <div class="kpi-grid">
+    <article class="card kpi-card">
+      <p class="kpi-label">Produtos</p>
+      <p class="kpi-value">{{ kpis.products }}</p>
+    </article>
+    <article class="card kpi-card">
+      <p class="kpi-label">Serviços</p>
+      <p class="kpi-value">{{ kpis.services }}</p>
+    </article>
+    <article class="card kpi-card">
+      <p class="kpi-label">Cases</p>
+      <p class="kpi-value">{{ kpis.cases }}</p>
+    </article>
+    <article class="card kpi-card">
+      <p class="kpi-label">Equipe</p>
+      <p class="kpi-value">{{ kpis.members }}</p>
+    </article>
+    <article class="card kpi-card">
+      <p class="kpi-label">Feedbacks</p>
+      <p class="kpi-value">{{ kpis.feedbacks }}</p>
+    </article>
+    <article class="card kpi-card">
+      <p class="kpi-label">Solicitações</p>
+      <p class="kpi-value">{{ kpis.requests }}</p>
+    </article>
+    <article class="card kpi-card">
+      <p class="kpi-label">Usuários</p>
+      <p class="kpi-value">{{ kpis.users }}</p>
+    </article>
+    <article class="card kpi-card">
+      <p class="kpi-label">Compras</p>
+      <p class="kpi-value">{{ kpis.purchases }}</p>
+    </article>
+  </div>
+</section>
+
+<section class="section" data-animate="fade-up" id="manager-metrics">
+  <div class="chart-grid">
+    <article class="card">
+      <h2>Solicitações por mês</h2>
+      {% if requests_series %}
+        <div class="bar-chart">
+          {% for item in requests_series %}
+            <div class="bar-chart__row">
+              <span class="bar-chart__label">{{ item.label }}</span>
+              <div class="bar-chart__bar">
+                <span style="width: {{ item.percent }}%"></span>
+              </div>
+              <span class="bar-chart__value">{{ item.value }}</span>
+            </div>
+          {% endfor %}
+        </div>
+      {% else %}
+        <p class="muted">Nenhuma solicitação registrada ainda.</p>
+      {% endif %}
+    </article>
+
+    <article class="card">
+      <h2>Compras por mês</h2>
+      {% if purchases_series %}
+        <div class="bar-chart">
+          {% for item in purchases_series %}
+            <div class="bar-chart__row">
+              <span class="bar-chart__label">{{ item.label }}</span>
+              <div class="bar-chart__bar">
+                <span style="width: {{ item.percent }}%"></span>
+              </div>
+              <span class="bar-chart__value">{{ item.value }}</span>
+            </div>
+          {% endfor %}
+        </div>
+      {% else %}
+        <p class="muted">Nenhuma compra registrada ainda.</p>
+      {% endif %}
+    </article>
+  </div>
 </section>
 
 <section class="section split-grid" data-animate="fade-up" id="manager-products">
@@ -72,23 +153,38 @@
 <section class="section split-grid" data-animate="fade-up" id="manager-sections">
   <article class="card">
     <h2>Produtos cadastrados</h2>
-    <div class="manager-list scroll-panel">
-      {% for product in products %}
-        <article class="manager-item">
-          <div>
-            <strong>{{ product.name }}</strong>
-            <p class="muted">R$ {{ product.price }} | {% if product.is_active %}Publicado{% else %}Rascunho{% endif %}</p>
-          </div>
-          <div class="actions-row">
-            <a class="btn btn-secondary" href="{% url 'product_detail' product.slug %}">Visualizar</a>
-            <a class="btn btn-secondary" href="{% url 'manager_product_edit' product.id %}">Editar</a>
-            <a class="btn btn-secondary" href="{% url 'manager_product_delete' product.id %}">Remover</a>
-          </div>
-        </article>
-      {% empty %}
-        <p class="muted">Nenhum produto cadastrado.</p>
-      {% endfor %}
-    </div>
+    {% if products %}
+      <div class="table-wrap scroll-panel">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Produto</th>
+              <th>Preço</th>
+              <th>Status</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for product in products %}
+              <tr>
+                <td><strong>{{ product.name }}</strong></td>
+                <td>R$ {{ product.price }}</td>
+                <td>{% if product.is_active %}Publicado{% else %}Rascunho{% endif %}</td>
+                <td>
+                  <div class="actions-row">
+                    <a class="btn btn-secondary" href="{% url 'product_detail' product.slug %}">Visualizar</a>
+                    <a class="btn btn-secondary" href="{% url 'manager_product_edit' product.id %}">Editar</a>
+                    <a class="btn btn-secondary" href="{% url 'manager_product_delete' product.id %}">Remover</a>
+                  </div>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% else %}
+      <p class="muted">Nenhum produto cadastrado.</p>
+    {% endif %}
   </article>
 
   <article class="card">
@@ -136,23 +232,36 @@
 
   <article class="card">
     <h2>Serviços cadastrados</h2>
-    <div class="manager-list scroll-panel">
-      {% for service in services %}
-        <article class="manager-item">
-          <div>
-            <strong>{{ service.title }}</strong>
-            <p class="muted">Status: {% if service.is_published %}Publicado{% else %}Rascunho{% endif %}</p>
-          </div>
-          <div class="actions-row">
-            <a class="btn btn-secondary" href="{% url 'service_detail' service.slug %}">Visualizar</a>
-            <a class="btn btn-secondary" href="{% url 'manager_service_edit' service.id %}">Editar</a>
-            <a class="btn btn-secondary" href="{% url 'manager_service_delete' service.id %}">Remover</a>
-          </div>
-        </article>
-      {% empty %}
-        <p class="muted">Nenhum serviço cadastrado.</p>
-      {% endfor %}
-    </div>
+    {% if services %}
+      <div class="table-wrap scroll-panel">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Serviço</th>
+              <th>Status</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for service in services %}
+              <tr>
+                <td><strong>{{ service.title }}</strong></td>
+                <td>{% if service.is_published %}Publicado{% else %}Rascunho{% endif %}</td>
+                <td>
+                  <div class="actions-row">
+                    <a class="btn btn-secondary" href="{% url 'service_detail' service.slug %}">Visualizar</a>
+                    <a class="btn btn-secondary" href="{% url 'manager_service_edit' service.id %}">Editar</a>
+                    <a class="btn btn-secondary" href="{% url 'manager_service_delete' service.id %}">Remover</a>
+                  </div>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% else %}
+      <p class="muted">Nenhum serviço cadastrado.</p>
+    {% endif %}
   </article>
 </section>
 
@@ -177,23 +286,36 @@
 
   <article class="card">
     <h2>Cases cadastrados</h2>
-    <div class="manager-list scroll-panel">
-      {% for case in cases %}
-        <article class="manager-item">
-          <div>
-            <strong>{{ case.title }}</strong>
-            <p class="muted">Status: {% if case.is_published %}Publicado{% else %}Rascunho{% endif %}</p>
-          </div>
-          <div class="actions-row">
-            <a class="btn btn-secondary" href="{% url 'case_detail' case.slug %}">Visualizar</a>
-            <a class="btn btn-secondary" href="{% url 'manager_case_edit' case.id %}">Editar</a>
-            <a class="btn btn-secondary" href="{% url 'manager_case_delete' case.id %}">Remover</a>
-          </div>
-        </article>
-      {% empty %}
-        <p class="muted">Nenhum case cadastrado.</p>
-      {% endfor %}
-    </div>
+    {% if cases %}
+      <div class="table-wrap scroll-panel">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Case</th>
+              <th>Status</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for case in cases %}
+              <tr>
+                <td><strong>{{ case.title }}</strong></td>
+                <td>{% if case.is_published %}Publicado{% else %}Rascunho{% endif %}</td>
+                <td>
+                  <div class="actions-row">
+                    <a class="btn btn-secondary" href="{% url 'case_detail' case.slug %}">Visualizar</a>
+                    <a class="btn btn-secondary" href="{% url 'manager_case_edit' case.id %}">Editar</a>
+                    <a class="btn btn-secondary" href="{% url 'manager_case_delete' case.id %}">Remover</a>
+                  </div>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% else %}
+      <p class="muted">Nenhum case cadastrado.</p>
+    {% endif %}
   </article>
 </section>
 
@@ -201,11 +323,11 @@
   <article class="card">
     <h2>Novos acessos</h2>
     <p class="muted">Crie usuários administradores ou clientes para o portal.</p>
-    <form method="post" class="form-grid">
+    <form method="post" enctype="multipart/form-data" class="form-grid">
       {% csrf_token %}
       <input type="hidden" name="action" value="create_user">
       {% for field in user_form %}
-        <div class="form-field {% if field.name == 'password1' or field.name == 'password2' %}form-field-full{% endif %}">
+        <div class="form-field {% if field.name == 'password1' or field.name == 'password2' or field.name == 'avatar' %}form-field-full{% endif %}">
           <label for="{{ field.id_for_label }}">{{ field.label }}</label>
           {{ field }}
           {% if field.help_text %}<p class="muted">{{ field.help_text|safe }}</p>{% endif %}
@@ -218,56 +340,94 @@
 
   <article class="card">
     <h2>Usuários cadastrados</h2>
-    <div class="manager-list scroll-panel">
-      {% for user_item in users %}
-        <article class="manager-item">
-          <div>
-            <strong>{{ user_item.first_name|default:user_item.username }}</strong>
-            <p class="muted">{{ user_item.email|default:user_item.username }}</p>
-            <p class="muted">Perfil: {% if user_item.is_staff %}Administrador{% else %}Cliente{% endif %} | Status: {% if user_item.is_active %}Ativo{% else %}Inativo{% endif %}</p>
-          </div>
-          <div class="actions-row">
-            <form method="post" action="{% url 'manager_user_toggle_staff' user_item.id %}">
-              {% csrf_token %}
-              <button class="btn btn-secondary" type="submit">
-                {% if user_item.is_staff %}Tornar cliente{% else %}Tornar admin{% endif %}
-              </button>
-            </form>
-            <form method="post" action="{% url 'manager_user_toggle_active' user_item.id %}">
-              {% csrf_token %}
-              <button class="btn btn-secondary" type="submit">
-                {% if user_item.is_active %}Desativar{% else %}Ativar{% endif %}
-              </button>
-            </form>
-          </div>
-        </article>
-      {% empty %}
-        <p class="muted">Nenhum usuário cadastrado.</p>
-      {% endfor %}
-    </div>
+    {% if users %}
+      <div class="table-wrap scroll-panel">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>E-mail</th>
+              <th>Perfil</th>
+              <th>Status</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for user_item in users %}
+              <tr>
+                <td><strong>{{ user_item.first_name|default:user_item.username }}</strong></td>
+                <td>{{ user_item.email|default:user_item.username }}</td>
+                <td>{% if user_item.is_staff %}Administrador{% else %}Cliente{% endif %}</td>
+                <td>{% if user_item.is_active %}Ativo{% else %}Inativo{% endif %}</td>
+                <td>
+                  <div class="actions-row">
+                    <a class="btn btn-secondary" href="{% url 'manager_user_edit' user_item.id %}">Editar</a>
+                    <form method="post" action="{% url 'manager_user_toggle_staff' user_item.id %}">
+                      {% csrf_token %}
+                      <button class="btn btn-secondary" type="submit">
+                        {% if user_item.is_staff %}Tornar cliente{% else %}Tornar admin{% endif %}
+                      </button>
+                    </form>
+                    <form method="post" action="{% url 'manager_user_delete' user_item.id %}">
+                      {% csrf_token %}
+                      <button class="btn btn-secondary" type="submit">Remover</button>
+                    </form>
+                  </div>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% else %}
+      <p class="muted">Nenhum usuário cadastrado.</p>
+    {% endif %}
   </article>
 </section>
 
 <section class="section" data-animate="fade-up" id="manager-requests">
   <article class="card">
     <h2>Solicitações de serviço</h2>
-    <div class="manager-list scroll-panel">
-      {% for request_item in service_requests %}
-        <article class="manager-item">
-          <div>
-            <strong>{{ request_item.name }}</strong>
-            <p class="muted">{{ request_item.email }}{% if request_item.phone %} | {{ request_item.phone }}{% endif %}</p>
-            <p class="muted">Tipo: {{ request_item.get_service_type_display }} | {{ request_item.created_at|date:"d/m/Y H:i" }}</p>
-            <p>{{ request_item.message|truncatechars:140 }}</p>
-          </div>
-          <div class="actions-row">
-            <span class="muted">Status: {{ request_item.get_status_display }}</span>
-          </div>
-        </article>
-      {% empty %}
-        <p class="muted">Nenhuma solicitação recebida ainda.</p>
-      {% endfor %}
-    </div>
+    {% if service_requests %}
+      <div class="table-wrap scroll-panel">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Cliente</th>
+              <th>Contato</th>
+              <th>Tipo</th>
+              <th>Data</th>
+              <th>Status</th>
+              <th>Mensagem</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for request_item in service_requests %}
+              <tr>
+                <td><strong>{{ request_item.name }}</strong></td>
+                <td>{{ request_item.email }}{% if request_item.phone %} | {{ request_item.phone }}{% endif %}</td>
+                <td>{{ request_item.get_service_type_display }}</td>
+                <td>{{ request_item.created_at|date:"d/m/Y H:i" }}</td>
+                <td>{{ request_item.get_status_display }}</td>
+                <td>{{ request_item.message|truncatechars:120 }}</td>
+                <td>
+                  <div class="actions-row">
+                    <a class="btn btn-secondary" href="{% url 'manager_service_request_edit' request_item.id %}">Editar</a>
+                    <form method="post" action="{% url 'manager_service_request_delete' request_item.id %}">
+                      {% csrf_token %}
+                      <button class="btn btn-secondary" type="submit">Remover</button>
+                    </form>
+                  </div>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% else %}
+      <p class="muted">Nenhuma solicitação recebida ainda.</p>
+    {% endif %}
   </article>
 </section>
 
@@ -292,24 +452,38 @@
 
   <article class="card">
     <h2>Equipe cadastrada</h2>
-    <div class="manager-list scroll-panel">
-      {% for member in members %}
-        <article class="manager-item">
-          <div>
-            <strong>{{ member.name }}</strong>
-            <p class="muted">{{ member.role }}</p>
-            <p class="muted">Status: {% if member.is_published %}Publicado{% else %}Rascunho{% endif %}</p>
-          </div>
-          <div class="actions-row">
-            <a class="btn btn-secondary" href="{% url 'member_detail' member.slug %}">Visualizar</a>
-            <a class="btn btn-secondary" href="{% url 'manager_member_edit' member.id %}">Editar</a>
-            <a class="btn btn-secondary" href="{% url 'manager_member_delete' member.id %}">Remover</a>
-          </div>
-        </article>
-      {% empty %}
-        <p class="muted">Nenhum membro cadastrado.</p>
-      {% endfor %}
-    </div>
+    {% if members %}
+      <div class="table-wrap scroll-panel">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>Cargo</th>
+              <th>Status</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for member in members %}
+              <tr>
+                <td><strong>{{ member.name }}</strong></td>
+                <td>{{ member.role }}</td>
+                <td>{% if member.is_published %}Publicado{% else %}Rascunho{% endif %}</td>
+                <td>
+                  <div class="actions-row">
+                    <a class="btn btn-secondary" href="{% url 'member_detail' member.slug %}">Visualizar</a>
+                    <a class="btn btn-secondary" href="{% url 'manager_member_edit' member.id %}">Editar</a>
+                    <a class="btn btn-secondary" href="{% url 'manager_member_delete' member.id %}">Remover</a>
+                  </div>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% else %}
+      <p class="muted">Nenhum membro cadastrado.</p>
+    {% endif %}
   </article>
 </section>
 
@@ -346,6 +520,38 @@
             </div>
           </article>
         {% endfor %}
+      </div>
+      <div class="table-wrap" style="margin-top:16px;">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Autor</th>
+              <th>Cargo</th>
+              <th>Status</th>
+              <th>Cadastro</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for feedback in feedbacks %}
+              <tr>
+                <td>{{ feedback.author|default:"-" }}</td>
+                <td>{{ feedback.role|default:"-" }}</td>
+                <td>{% if feedback.is_published %}Publicado{% else %}Rascunho{% endif %}</td>
+                <td>{{ feedback.created_at|date:"d/m/Y" }}</td>
+                <td>
+                  <div class="actions-row">
+                    <a class="btn btn-secondary" href="{% url 'manager_feedback_edit' feedback.id %}">Editar</a>
+                    <form method="post" action="{% url 'manager_feedback_delete' feedback.id %}">
+                      {% csrf_token %}
+                      <button class="btn btn-secondary" type="submit">Remover</button>
+                    </form>
+                  </div>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
       </div>
     {% else %}
       <p class="muted">Nenhum feedback publicado ainda.</p>

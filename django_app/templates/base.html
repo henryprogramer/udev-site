@@ -11,7 +11,7 @@
   <link rel="icon" type="image/png" sizes="1000x1000" href="{% static 'assets/logos/logo_empresa.png' %}">
   <link rel="apple-touch-icon" sizes="180x180" href="{% static 'assets/logos/logo_empresa.png' %}">
   <link rel="apple-touch-icon" sizes="512x512" href="{% static 'assets/logos/logo_empresa.png' %}">
-  <link rel="stylesheet" href="{% static 'css/site.css' %}">
+  <link rel="stylesheet" href="{% static 'css/site.css' %}?v=20260321">
 </head>
 <body>
   <canvas id="binary-rain" aria-hidden="true"></canvas>
@@ -95,56 +95,97 @@
 
   <footer class="site-footer">
     <div class="site-footer__inner">
-      <div class="footer-brand">
-        <img
-          src="{% static 'assets/logos/logo_empresa.png' %}"
-          alt="Udev - logo"
-          class="footer-logo theme-logo"
-          data-dark-src="{% static 'assets/logos/logo_empresa.png' %}"
-          data-light-src="{% static 'assets/logos/logo_empresa_dark.png' %}"
-        >
-        <div class="footer-brand__text">
-          <p class="footer-title">Udev</p>
-          <p class="footer-meta">Tecnologia prática, eficiência mensurável e crescimento sustentável.</p>
-          <p class="footer-heart">
-            Feito com
-            <span class="footer-heart__icon" aria-hidden="true">❤</span>
-            para quem constrói o futuro.
-          </p>
+      <div class="footer-brand-column">
+        <div class="footer-brand">
+          <img
+            src="{% static 'assets/logos/logo_empresa.png' %}"
+            alt="Udev - logo"
+            class="footer-logo theme-logo"
+            data-dark-src="{% static 'assets/logos/logo_empresa.png' %}"
+            data-light-src="{% static 'assets/logos/logo_empresa_dark.png' %}"
+          >
+          <div class="footer-brand__text">
+            <p class="footer-title">Udev</p>
+            <p class="footer-meta">Tecnologia prática, eficiência mensurável e crescimento sustentável.</p>
+            <p class="footer-heart">
+              Feito com
+              <span class="footer-heart__icon" aria-hidden="true">❤</span>
+              para quem constrói o futuro.
+            </p>
+            <p class="footer-meta footer-legal">Ideia: 29/03/2023 | Estruturação oficial: 30/11/2025</p>
+            <section class="footer-links footer-contact" aria-labelledby="footer-contact-title">
+              <h4 id="footer-contact-title">Contato</h4>
+              {% if footer_profile.phone %}
+                <a href="{{ footer_profile.phone }}" target="_blank" rel="noopener">
+                  <span class="footer-icon">📱</span>
+                  WhatsApp
+                </a>
+              {% endif %}
+              {% if footer_profile.instagram %}
+                <a href="{{ footer_profile.instagram }}" target="_blank" rel="noopener">
+                  <span class="footer-icon">📷</span>
+                  Instagram
+                </a>
+              {% endif %}
+              {% if footer_profile.email %}
+                <a href="mailto:{{ footer_profile.email }}">
+                  <span class="footer-icon">✉</span>
+                  {{ footer_profile.email }}
+                </a>
+              {% endif %}
+              {% if not footer_profile.phone and not footer_profile.instagram and not footer_profile.email %}
+                <p class="footer-meta">Canais de contato serão publicados em breve.</p>
+              {% endif %}
+            </section>
+          </div>
         </div>
       </div>
+
       <div class="footer-info">
-        <div class="footer-links">
-          <h4>Documentação</h4>
-          <a href="{% url 'docs' %}">Central de documentos</a>
-          <a href="{% url 'rights' %}">Direitos e uso</a>
-          <a href="{% url 'guidelines' %}">Diretrizes da marca</a>
-        </div>
-        <div class="footer-links">
-          <h4>Contato</h4>
-          {% if footer_profile.phone %}
-            <a href="{{ footer_profile.phone }}" target="_blank" rel="noopener">
-              <span class="footer-icon">📱</span>
-              WhatsApp
+        <nav class="footer-docs" aria-label="Documentação">
+          <div class="footer-docs__header">
+            <h4>Documentação</h4>
+            <a class="footer-docs__hub" href="{{ legal_docs_index.url }}">
+              {{ legal_docs_index.title }}
             </a>
-          {% endif %}
-          {% if footer_profile.instagram %}
-            <a href="{{ footer_profile.instagram }}" target="_blank" rel="noopener">
-              <span class="footer-icon">📷</span>
-              Instagram
-            </a>
-          {% endif %}
-          {% if footer_profile.email %}
-            <a href="mailto:{{ footer_profile.email }}">
-              <span class="footer-icon">✉</span>
-              {{ footer_profile.email }}
-            </a>
-          {% endif %}
-          {% if not footer_profile.phone and not footer_profile.instagram and not footer_profile.email %}
-            <p class="footer-meta">Canais de contato serão publicados em breve.</p>
-          {% endif %}
-        </div>
-        <p class="footer-meta footer-legal">Ideia: 29/03/2023 | Estruturação oficial: 30/11/2025</p>
+          </div>
+
+          {% for group in legal_footer_docs_groups %}
+            <section class="footer-doc-group">
+              <h5>{{ group.title }}</h5>
+              <ul>
+                {% for document in group.documents %}
+                  <li>
+                    <a href="{{ document.url }}">{{ document.title }}</a>
+                  </li>
+                {% endfor %}
+              </ul>
+            </section>
+          {% endfor %}
+        </nav>
+
+        <section class="footer-institutional" aria-labelledby="footer-institutional-title">
+          <div class="footer-doc-group">
+            <h5 id="footer-institutional-title">{{ legal_footer_institutional_group.title }}</h5>
+            <ul>
+              {% for document in legal_footer_institutional_group.documents %}
+                <li>
+                  <a href="{{ document.url }}">{{ document.title }}</a>
+                </li>
+              {% endfor %}
+            </ul>
+          </div>
+
+          <aside class="footer-trust" aria-label="Segurança">
+            <span class="footer-trust__icon" aria-hidden="true">🔒</span>
+            <div class="footer-trust__body">
+              <h4>{{ legal_trust_block.title }}</h4>
+              {% for line in legal_trust_block.lines %}
+                <p>{{ line }}</p>
+              {% endfor %}
+            </div>
+          </aside>
+        </section>
       </div>
     </div>
   </footer>

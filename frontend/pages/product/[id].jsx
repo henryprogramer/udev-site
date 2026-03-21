@@ -38,22 +38,26 @@ const fallbackCatalog = [
   }))
 ];
 
-export default function ProductDetailPage() {
-  const router = useRouter();
-  const { id } = router.query;
+function getCatalogItem(id) {
+  if (!id || typeof id !== 'string') return null;
+  return fallbackCatalog.find((entry) => entry.id === id) || null;
+}
 
-  const [item, setItem] = useState(null);
+export default function ProductDetailPage({ initialItem = null }) {
+  const router = useRouter();
+  const routeId = typeof router.query.id === 'string' ? router.query.id : initialItem?.id || null;
+
+  const [item, setItem] = useState(initialItem);
   const [loading, setLoading] = useState(false);
 
   const fallbackItem = useMemo(() => {
-    if (!id || typeof id !== 'string') return null;
-    return fallbackCatalog.find((entry) => entry.id === id) || null;
-  }, [id]);
+    return getCatalogItem(routeId) || initialItem || null;
+  }, [initialItem, routeId]);
 
   useEffect(() => {
-    if (!id || typeof id !== 'string') return;
+    if (!routeId || typeof routeId !== 'string') return;
 
-    const numericId = Number(id);
+    const numericId = Number(routeId);
     if (!Number.isInteger(numericId)) {
       setItem(fallbackItem);
       return;
@@ -84,10 +88,10 @@ export default function ProductDetailPage() {
     return () => {
       active = false;
     };
-  }, [id, fallbackItem]);
+  }, [fallbackItem, routeId]);
 
   const current = item || fallbackItem || {
-    id: String(id || 'produto'),
+    id: String(routeId || 'produto'),
     title: 'Produto Udev',
     description: 'Solucao digital com foco em resultado.',
     priceFrom: 'R$ 1.990'
@@ -199,4 +203,19 @@ export default function ProductDetailPage() {
       />
     </>
   );
+}
+
+export async function getStaticPaths() {
+  return {
+    paths: fallbackCatalog.map((item) => ({ params: { id: item.id } })),
+    fallback: false
+  };
+}
+
+export async function getStaticProps({ params }) {
+  return {
+    props: {
+      initialItem: getCatalogItem(params.id)
+    }
+  };
 }

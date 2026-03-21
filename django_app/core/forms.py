@@ -189,6 +189,7 @@ class ManagerPasswordSetupForm(forms.Form):
         label="Confirmar senha",
         widget=forms.PasswordInput(attrs={"class": "password-field"}),
     )
+    avatar = forms.ImageField(label="Foto (opcional)", required=False)
 
     def clean_password1(self):
         password = self.cleaned_data["password1"]
@@ -220,6 +221,34 @@ class ServiceRequestForm(forms.ModelForm):
         }
         help_texts = {
             "phone": "Use DDD. Exemplo: (63) 98441-0000",
+        }
+        widgets = {
+            "message": forms.Textarea(attrs={"rows": 5}),
+        }
+
+
+class ServiceRequestAdminForm(forms.ModelForm):
+    """Edição administrativa de solicitações de serviço."""
+
+    class Meta:
+        model = ServiceRequest
+        fields = [
+            "name",
+            "email",
+            "phone",
+            "company",
+            "service_type",
+            "status",
+            "message",
+        ]
+        labels = {
+            "name": "Nome completo",
+            "email": "E-mail",
+            "phone": "WhatsApp",
+            "company": "Empresa (opcional)",
+            "service_type": "Tipo de serviço",
+            "status": "Status",
+            "message": "Mensagem do cliente",
         }
         widgets = {
             "message": forms.Textarea(attrs={"rows": 5}),
@@ -274,6 +303,33 @@ class ManagerUserForm(forms.Form):
         if password1 and password2 and password1 != password2:
             raise forms.ValidationError("As senhas não conferem.")
         return cleaned_data
+
+
+class ManagerUserEditForm(forms.Form):
+    """Edição administrativa de usuários."""
+
+    ROLE_STAFF = ManagerUserForm.ROLE_STAFF
+    ROLE_CLIENT = ManagerUserForm.ROLE_CLIENT
+    ROLE_CHOICES = ManagerUserForm.ROLE_CHOICES
+
+    full_name = forms.CharField(label="Nome completo", max_length=150)
+    email = forms.EmailField(label="E-mail")
+    role = forms.ChoiceField(label="Perfil", choices=ROLE_CHOICES)
+    avatar = forms.ImageField(label="Foto (opcional)", required=False)
+
+    def __init__(self, *args, user: User, **kwargs):
+        self.user = user
+        super().__init__(*args, **kwargs)
+
+    def clean_email(self):
+        email = self.cleaned_data["email"].strip().lower()
+        if (
+            User.objects.filter(username=email)
+            .exclude(pk=self.user.pk)
+            .exists()
+        ):
+            raise forms.ValidationError("Este e-mail já está cadastrado.")
+        return email
 
 
 class ClientFeedbackForm(forms.ModelForm):

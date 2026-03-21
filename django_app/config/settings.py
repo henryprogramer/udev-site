@@ -58,6 +58,7 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
                 "core.context_processors.footer_profile",
+                "core.context_processors.legal_resources",
                 "core.context_processors.client_profile",
             ],
         },

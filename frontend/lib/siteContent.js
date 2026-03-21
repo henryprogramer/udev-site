@@ -1,4 +1,4 @@
-export const storeUrl = process.env.NEXT_PUBLIC_STORE_URL || 'https://loja.exemplo.com';
+export const storeUrl = process.env.NEXT_PUBLIC_STORE_URL || 'https://udevstartup.com.br';
 
 export const mission =
   'Desenvolver solucoes digitais eficientes que eliminem tarefas manuais e potencializem processos empresariais.';

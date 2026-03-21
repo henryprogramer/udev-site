@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from datetime import datetime
 from functools import wraps
 from pathlib import Path
 from typing import Callable
@@ -13,8 +14,11 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView, LogoutView, redirect_to_login
 from django.core.mail import send_mail
+from django.db.models import Count
+from django.db.models.functions import TruncMonth
 from django.http import FileResponse, HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
+from django.utils import timezone
 from django.views.decorators.http import require_POST
 
 from .forms import (
@@ -22,12 +26,14 @@ from .forms import (
     ClientFeedbackForm,
     LoginForm,
     ManagerUserForm,
+    ManagerUserEditForm,
     ManagerPasswordSetupForm,
     ManagerTokenRequestForm,
     ProductForm,
     RegisterForm,
     ServiceItemForm,
     ServiceRequestForm,
+    ServiceRequestAdminForm,
     SectionContentForm,
     TeamMemberForm,
 )
@@ -43,6 +49,7 @@ from .models import (
     ServiceRequest,
     TeamMember,
 )
+from .legal import LEGAL_LAST_UPDATED
 
 
 def manager_required(view_func: Callable) -> Callable:
@@ -62,6 +69,46 @@ def manager_required(view_func: Callable) -> Callable:
         return view_func(request, *args, **kwargs)
 
     return _wrapped
+
+
+def _shift_month(year: int, month: int, delta: int) -> tuple[int, int]:
+    total = year * 12 + (month - 1) + delta
+    new_year = total // 12
+    new_month = total % 12 + 1
+    return new_year, new_month
+
+
+def _monthly_series(queryset, date_field: str, months: int = 6) -> list[dict]:
+    now = timezone.localtime(timezone.now())
+    start_year, start_month = _shift_month(now.year, now.month, -(months - 1))
+    tz = timezone.get_current_timezone()
+    start_dt = timezone.make_aware(datetime(start_year, start_month, 1), tz)
+
+    rows = (
+        queryset.filter(**{f"{date_field}__gte": start_dt})
+        .annotate(month=TruncMonth(date_field))
+        .values("month")
+        .annotate(total=Count("id"))
+        .order_by("month")
+    )
+    counts = {(row["month"].year, row["month"].month): row["total"] for row in rows}
+
+    series: list[dict] = []
+    values: list[int] = []
+    for i in range(months):
+        year, month = _shift_month(start_year, start_month, i)
+        value = counts.get((year, month), 0)
+        values.append(value)
+        label = f"{month:02d}/{str(year)[-2:]}"
+        series.append({"label": label, "value": value})
+
+    max_value = max(values) if values else 0
+    for item in series:
+        if max_value:
+            item["percent"] = round(item["value"] / max_value * 100, 2)
+        else:
+            item["percent"] = 0
+    return series
 
 
 SECTION_DEFAULTS = {
@@ -514,15 +561,35 @@ def member_detail_view(request: HttpRequest, slug: str) -> HttpResponse:
 
 
 def docs_view(request: HttpRequest) -> HttpResponse:
-    return render(request, "docs.html")
+    return render(request, "docs.html", {"last_updated": LEGAL_LAST_UPDATED})
+
+
+def privacy_view(request: HttpRequest) -> HttpResponse:
+    return render(request, "privacy.html", {"last_updated": LEGAL_LAST_UPDATED})
+
+
+def terms_view(request: HttpRequest) -> HttpResponse:
+    return render(request, "terms.html", {"last_updated": LEGAL_LAST_UPDATED})
+
+
+def payment_policy_view(request: HttpRequest) -> HttpResponse:
+    return render(
+        request,
+        "payment_policy.html",
+        {"last_updated": LEGAL_LAST_UPDATED},
+    )
+
+
+def security_view(request: HttpRequest) -> HttpResponse:
+    return render(request, "security.html", {"last_updated": LEGAL_LAST_UPDATED})
 
 
 def rights_view(request: HttpRequest) -> HttpResponse:
-    return render(request, "rights.html")
+    return render(request, "rights.html", {"last_updated": LEGAL_LAST_UPDATED})
 
 
 def guidelines_view(request: HttpRequest) -> HttpResponse:
-    return render(request, "guidelines.html")
+    return render(request, "guidelines.html", {"last_updated": LEGAL_LAST_UPDATED})
 
 
 def product_detail_view(request: HttpRequest, slug: str) -> HttpResponse:
@@ -799,12 +866,13 @@ def manager_dashboard_view(request: HttpRequest) -> HttpResponse:
                 return redirect("manager_dashboard")
 
         if action == "create_user":
-            user_form = ManagerUserForm(request.POST, prefix="user")
+            user_form = ManagerUserForm(request.POST, request.FILES, prefix="user")
             if user_form.is_valid():
                 full_name = user_form.cleaned_data["full_name"].strip()
                 email = user_form.cleaned_data["email"].strip().lower()
                 role = user_form.cleaned_data["role"]
                 password = user_form.cleaned_data["password1"]
+                avatar = user_form.cleaned_data.get("avatar")
 
                 user = User.objects.create_user(
                     username=email,
@@ -816,7 +884,10 @@ def manager_dashboard_view(request: HttpRequest) -> HttpResponse:
                 user.is_active = True
                 user.save()
                 if role == ManagerUserForm.ROLE_CLIENT:
-                    ClientProfile.objects.get_or_create(user=user)
+                    profile, _created = ClientProfile.objects.get_or_create(user=user)
+                    if avatar:
+                        profile.avatar = avatar
+                        profile.save()
 
                 messages.success(request, "Usuário criado com sucesso.")
                 return redirect("manager_dashboard")
@@ -873,6 +944,20 @@ def manager_dashboard_view(request: HttpRequest) -> HttpResponse:
     members = TeamMember.objects.all()
     services = ServiceItem.objects.all()
     cases = CaseStudy.objects.all()
+
+    kpis = {
+        "products": products.count(),
+        "services": services.count(),
+        "cases": cases.count(),
+        "members": members.count(),
+        "feedbacks": feedbacks.count(),
+        "requests": service_requests.count(),
+        "users": users.count(),
+        "purchases": Purchase.objects.count(),
+    }
+
+    requests_series = _monthly_series(ServiceRequest.objects.all(), "created_at")
+    purchases_series = _monthly_series(Purchase.objects.all(), "created_at")
     return render(
         request,
         "manager_dashboard.html",
@@ -892,6 +977,9 @@ def manager_dashboard_view(request: HttpRequest) -> HttpResponse:
             "members": members,
             "services": services,
             "cases": cases,
+            "kpis": kpis,
+            "requests_series": requests_series,
+            "purchases_series": purchases_series,
             "manager_email": settings.MANAGER_REGISTRATION_EMAIL,
         },
     )
@@ -933,6 +1021,123 @@ def manager_user_toggle_active_view(request: HttpRequest, user_id: int) -> HttpR
     status = "ativado" if user.is_active else "desativado"
     messages.success(request, f"Usuário {status} com sucesso.")
     return redirect("manager_dashboard")
+
+
+@manager_required
+def manager_user_edit_view(request: HttpRequest, user_id: int) -> HttpResponse:
+    user = get_object_or_404(User, pk=user_id)
+    initial = {
+        "full_name": user.first_name,
+        "email": user.email or user.username,
+        "role": ManagerUserForm.ROLE_STAFF if user.is_staff else ManagerUserForm.ROLE_CLIENT,
+    }
+    form = ManagerUserEditForm(
+        request.POST or None,
+        request.FILES or None,
+        user=user,
+        initial=initial,
+    )
+
+    if request.method == "POST" and form.is_valid():
+        role = form.cleaned_data["role"]
+        email = form.cleaned_data["email"].strip().lower()
+        avatar = form.cleaned_data.get("avatar")
+
+        if user.is_staff and role == ManagerUserForm.ROLE_CLIENT:
+            staff_count = User.objects.filter(is_staff=True).count()
+            if staff_count <= 1:
+                messages.error(request, "É necessário manter ao menos um administrador.")
+                return redirect("manager_dashboard")
+
+        user.first_name = form.cleaned_data["full_name"].strip()
+        user.username = email
+        user.email = email
+        user.is_staff = role == ManagerUserForm.ROLE_STAFF
+        user.save()
+
+        if role == ManagerUserForm.ROLE_CLIENT or avatar:
+            profile, _created = ClientProfile.objects.get_or_create(user=user)
+            if avatar:
+                profile.avatar = avatar
+                profile.save()
+
+        messages.success(request, "Usuário atualizado com sucesso.")
+        return redirect("manager_dashboard")
+
+    return render(request, "manager_user_edit.html", {"form": form, "user_item": user})
+
+
+@manager_required
+@require_POST
+def manager_user_delete_view(request: HttpRequest, user_id: int) -> HttpResponse:
+    user = get_object_or_404(User, pk=user_id)
+    if user == request.user:
+        messages.error(request, "Você não pode remover seu próprio acesso.")
+        return redirect("manager_dashboard")
+
+    if user.is_staff:
+        staff_count = User.objects.filter(is_staff=True).count()
+        if staff_count <= 1:
+            messages.error(request, "É necessário manter ao menos um administrador.")
+            return redirect("manager_dashboard")
+
+    user.delete()
+    messages.success(request, "Usuário removido com sucesso.")
+    return redirect("manager_dashboard")
+
+
+@manager_required
+@require_POST
+def manager_service_request_delete_view(
+    request: HttpRequest, request_id: int
+) -> HttpResponse:
+    service_request = get_object_or_404(ServiceRequest, pk=request_id)
+    service_request.delete()
+    messages.success(request, "Solicitação removida com sucesso.")
+    return redirect("manager_dashboard")
+
+
+@manager_required
+def manager_service_request_edit_view(
+    request: HttpRequest, request_id: int
+) -> HttpResponse:
+    service_request = get_object_or_404(ServiceRequest, pk=request_id)
+    form = ServiceRequestAdminForm(request.POST or None, instance=service_request)
+    if request.method == "POST" and form.is_valid():
+        form.save()
+        messages.success(request, "Solicitação atualizada com sucesso.")
+        return redirect("manager_dashboard")
+    return render(
+        request,
+        "manager_service_request_edit.html",
+        {"form": form, "service_request": service_request},
+    )
+
+
+@manager_required
+@require_POST
+def manager_feedback_delete_view(request: HttpRequest, feedback_id: int) -> HttpResponse:
+    feedback = get_object_or_404(ClientFeedback, pk=feedback_id)
+    feedback.delete()
+    messages.success(request, "Feedback removido com sucesso.")
+    return redirect("manager_dashboard")
+
+
+@manager_required
+def manager_feedback_edit_view(request: HttpRequest, feedback_id: int) -> HttpResponse:
+    feedback = get_object_or_404(ClientFeedback, pk=feedback_id)
+    form = ClientFeedbackForm(
+        request.POST or None, request.FILES or None, instance=feedback
+    )
+    if request.method == "POST" and form.is_valid():
+        form.save()
+        messages.success(request, "Feedback atualizado com sucesso.")
+        return redirect("manager_dashboard")
+    return render(
+        request,
+        "manager_feedback_edit.html",
+        {"form": form, "feedback": feedback},
+    )
 
 
 @manager_required

@@ -1,22 +1,39 @@
-{% extends 'base.html' %}
+{% extends 'legal_page.html' %}
 
-{% block title %}Direitos e Uso | UDEV | StartUP{% endblock %}
+{% block title %}Direitos de Uso | UDEV | StartUP{% endblock %}
+{% block legal_title %}Direitos de Uso{% endblock %}
+{% block legal_lead %}Esta página estabelece as condições de uso do conteúdo, da identidade visual e dos materiais disponibilizados pela UDEV.{% endblock %}
+{% block legal_intro %}O objetivo é deixar claro o que pode ser consultado, o que é autorizado e o que depende de permissão expressa.{% endblock %}
 
-{% block content %}
-<section class="hero" data-animate="fade-up">
-  <h1>Direitos e Uso</h1>
-  <p class="lead">Transparência sobre propriedade intelectual e licenças.</p>
-</section>
+{% block legal_body %}
+  <article class="legal-section">
+    <h2>1. Propriedade intelectual</h2>
+    <p>Todo o conteúdo apresentado no site, incluindo textos, marcas, logotipos, ícones, interfaces, imagens, materiais institucionais e estruturas visuais, pertence à UDEV ou é utilizado com autorização.</p>
+  </article>
 
-<section class="section" data-animate="fade-up">
-  <div class="section-surface section-surface--grid reveal-on-scroll">
-    <h2>Diretrizes iniciais</h2>
-    <p class="muted">As políticas completas serão publicadas em breve.</p>
+  <article class="legal-section">
+    <h2>2. Uso autorizado</h2>
+    <p>O usuário pode visualizar, acessar e utilizar os conteúdos do site para fins pessoais, informativos ou de contratação dos serviços oferecidos, desde que respeitadas as regras aqui descritas.</p>
+  </article>
+
+  <article class="legal-section">
+    <h2>3. Uso proibido</h2>
+    <p>É proibido:</p>
     <ul class="detail-list">
-      <li>Conteúdos e marcas são protegidos por direitos autorais.</li>
-      <li>Produtos digitais possuem licença de uso definida em contrato.</li>
-      <li>Materiais da Udev não podem ser distribuídos sem autorização.</li>
+      <li>copiar, reproduzir ou redistribuir conteúdo sem autorização;</li>
+      <li>modificar ou remover marcas e avisos de autoria;</li>
+      <li>utilizar materiais da UDEV para fins comerciais indevidos;</li>
+      <li>praticar engenharia reversa, scraping abusivo ou qualquer ação que comprometa o ambiente digital.</li>
     </ul>
-  </div>
-</section>
+  </article>
+
+  <article class="legal-section">
+    <h2>4. Licenças e permissões</h2>
+    <p>Qualquer uso diferente do previsto nestas regras depende de autorização expressa da UDEV.</p>
+  </article>
+
+  <article class="legal-section">
+    <h2>5. Violações</h2>
+    <p>O uso indevido de conteúdo poderá gerar medidas administrativas, técnicas ou jurídicas cabíveis.</p>
+  </article>
 {% endblock %}

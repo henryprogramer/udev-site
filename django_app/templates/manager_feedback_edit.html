@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}Editar feedback | UDEV | StartUP{% endblock %}
+
+{% block content %}
+<section class="hero" data-animate="fade-up">
+  <h1>Editar feedback</h1>
+  <p class="lead">Atualize a imagem e as informações do feedback.</p>
+</section>
+
+<section class="section" data-animate="fade-up">
+  <article class="card">
+    <form method="post" enctype="multipart/form-data" class="form-grid">
+      {% csrf_token %}
+      {% for field in form %}
+        <div class="form-field {% if field.name == 'quote' %}form-field-full{% endif %}">
+          <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+          {{ field }}
+          {% if field.help_text %}<p class="muted">{{ field.help_text|safe }}</p>{% endif %}
+          {% if field.errors %}<p class="error-text">{{ field.errors|striptags }}</p>{% endif %}
+        </div>
+      {% endfor %}
+      <div class="actions-row">
+        <button class="btn btn-primary" type="submit">Salvar alterações</button>
+        <a class="btn btn-secondary" href="{% url 'manager_dashboard' %}">Cancelar</a>
+      </div>
+    </form>
+  </article>
+</section>
+{% endblock %}

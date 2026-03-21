@@ -1,22 +1,55 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}Documentação | UDEV | StartUP{% endblock %}
 
 {% block content %}
 <section class="hero" data-animate="fade-up">
+  <div class="hero-brand">
+    <img
+      src="{% static 'assets/logos/logo_empresa.png' %}"
+      alt="Logo Udev"
+      class="hero-brand__logo theme-logo"
+      data-dark-src="{% static 'assets/logos/logo_empresa.png' %}"
+      data-light-src="{% static 'assets/logos/logo_empresa_dark.png' %}"
+    >
+    <span>Udev</span>
+  </div>
   <h1>Central de Documentação</h1>
-  <p class="lead">Organizamos guias, termos e referências para clientes e parceiros.</p>
+  <p class="lead">Aqui reunimos os documentos institucionais que orientam privacidade, uso, pagamentos, segurança e identidade da UDEV.</p>
+  <p>Consulte esta área antes de navegar, contratar ou compartilhar informações em nossos canais digitais.</p>
 </section>
 
 <section class="section" data-animate="fade-up">
   <div class="section-surface section-surface--soft reveal-on-scroll">
-    <h2>Em construção</h2>
-    <p class="muted">Aqui estarão manuais de uso, integrações, prazos e fluxos operacionais.</p>
+    <h2>Resumo rápido</h2>
     <ul class="detail-list">
-      <li>Guias rápidos de onboarding.</li>
-      <li>Documentação técnica de produtos.</li>
-      <li>Checklist de implantação e suporte.</li>
+      {% for point in legal_notice_points %}
+        <li>{{ point }}</li>
+      {% endfor %}
     </ul>
+  </div>
+</section>
+
+<section class="section" data-animate="fade-up">
+  <div class="section-surface section-surface--grid reveal-on-scroll">
+    <h2>Documentos publicados</h2>
+    <p class="muted">Abra cada página para ler a versão completa e atualizada do documento.</p>
+    <div class="grid cards-3">
+      {% for document in legal_documents %}
+        <a class="card card-link doc-card" href="{{ document.url }}">
+          <h3>{{ document.title }}</h3>
+          <p>{{ document.summary }}</p>
+          <span class="doc-card__link">Abrir documento</span>
+        </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="section" data-animate="fade-up">
+  <div class="section-surface section-surface--soft reveal-on-scroll">
+    <p class="legal-updated"><span>Última atualização</span><strong>{{ last_updated|date:"d/m/Y" }}</strong></p>
   </div>
 </section>
 {% endblock %}
